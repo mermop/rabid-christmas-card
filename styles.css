@@ -2,7 +2,7 @@ body {
   background-color: #000;
   color: #FFF;
   font-family: 'inconsolatamedium';
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .container {
@@ -21,12 +21,12 @@ body {
   -webkit-appearance: none;
   border-radius: 0;
   outline: none;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .precursor {
 }
 
 .human-response {
-
+  margin-top: 5px;
 }
