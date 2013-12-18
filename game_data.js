@@ -109,7 +109,7 @@ var npcs = {
     name: "Breccan McLeod",
     lines:{
       encounter: [
-        "Breccan sees you coming, smiles, and swivels his chair around to greet you. You meet his eyes and he smiles. \"It's great to see you again,\" he says." 
+        "Breccan sees you coming, smiles, and swivels his chair around to greet you. You meet his eyes and he smiles. \"Greetings,\" he says." 
       ],
       greet: [
         "Breccan smiles at you. \"How have you been?\" he asks. As you answer, he nods, and asks follow-up questions. You get the feeling he's really glad you visited.",
