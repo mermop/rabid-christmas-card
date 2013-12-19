@@ -2,29 +2,22 @@
 //score game based on number of hugs
 //let people steal a bike but take a point off. and don't give the point back if they give the bike back: "That won't ASSUAGE your CONSCIENCE."
 
-//location
-
-
-
-//object
-
-
-//npc
 var score = 0;
 var turn_count = 0;
 var current_location = locations.outside;
 
 function computer_print(response) {
-	$("#history").append('<div class="computer-response">' + response + '</div>')
+	$("#history").append('<div class="computer-response">' + response + '</div>');
 }
 
-function Walk (direction) {
-	var directions = ["north", "south", "east", "west"];
-	if(directions.indexOf(direction) > -1) {
-		return ("walking " + direction)
+function Walk (dir) {
+	var dirs = ["north", "south", "east", "west"];
+	if(dirs.indexOf(dir) > -1) {	
+		current_location = locations[current_location.directions[dir]];
+		return ("walking " + dir + " to " + current_location.name);
 	}
 	else {
-		return ("invalid direction")
+		return ("invalid direction");
 	}
 }
 
@@ -38,6 +31,10 @@ function Take (object) {
 
 function Kill (victim) {
 	return ("killing " + victim)
+}
+
+function Look (object) {
+	return ("looking at " + object);
 }
 
 function check_for_verbs(response) {
@@ -68,6 +65,12 @@ function check_for_verbs(response) {
 	if (response.substring(0,6) == "murder") {
 		return Kill(response.substr(7));
 	}
+	if (response.substring(0,7) == "look at") {
+		return Look(response.substr(8));
+	}
+	if (response.substring(0,4) == "look") {
+		return Look(response.substr(5));
+	}
 	else {
 		return false;
 	}
@@ -78,20 +81,11 @@ function turn(response) {
     $("#history").append('<div class="human-response"> >' + response + '</div>') //reprint response
     $('#response').val(""); //clear response box
     turn_count ++;
-    var check_response = current_location.commands.indexOf(response);
-    if(check_response > -1) {
-    	computer_print("You head " + current_location.commands[check_response] + " to " + current_location.name + ".")
-	    current_location = locations.stairs;
-	    computer_print(current_location.description);
-	    score ++;
+    if(check_for_verbs(response) === false){
+	    computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.")
     }
     else {
-	    if(check_for_verbs(response) === false){
-		    computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.")
-	    }
-	    else {
-	    	computer_print(check_for_verbs(response));
-	    }
+    	computer_print(check_for_verbs(response));
     }
     computer_print("Your score is " + score + ".");
     computer_print("This is turn " + turn_count + ".")
