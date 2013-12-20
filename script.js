@@ -10,11 +10,36 @@ function computer_print(response) {
 	$("#history").append('<div class="computer-response">' + response + '</div>');
 }
 
+function score_update(score) {
+	$("#score").text("Score: " + score);
+}
+
+function turn_update(turn) {
+	$("#turn").text("Turn: " + turn);
+}
+
 function Walk (dir) {
 	var dirs = ["north", "south", "east", "west"];
-	if(dirs.indexOf(dir) > -1) {	
-		current_location = locations[current_location.directions[dir]];
-		return ("walking " + dir + " to " + current_location.name);
+	if(dirs.indexOf(dir) > -1) {
+		var destination_location = current_location.directions[dir];
+		if(destination_location == "nope") {
+			return ("can't go there");
+		}
+		else {
+		current_location = locations[destination_location];
+		var what_to_return = "walking " + dir + " to " + current_location.name + ". " + current_location.description;
+		if(current_location.objects) {
+			for (var i = 0; i < current_location.objects.length; i++) {
+				what_to_return = what_to_return + "There is a " + current_location.objects[i] + " here. ";
+			}
+		}
+		if(current_location.npcs) {
+			for (var i = 0; i < current_location.npcs.length; i++) {
+				what_to_return = what_to_return + npcs[current_location.npcs[i]].name + " is here. ";
+			}
+		}
+		return (what_to_return);
+		}
 	}
 	else {
 		return ("invalid direction");
@@ -22,7 +47,24 @@ function Walk (dir) {
 }
 
 function Hug (recipient) {
-	return ("hugging " + recipient)
+	if(current_location.npcs) {
+		if(current_location.npcs.indexOf(recipient) > -1) {
+			if(npcs[recipient].hugged === true){
+				return (npcs[recipient].lines.hug)
+			}
+			else {
+				npcs[recipient].hugged = true;
+				score++;
+				return (npcs[recipient].lines.hug + "You feel accomplished, like you are closer to winning this silly game. ")
+			}
+		}
+		else {
+			return ("You can't hug " + recipient + ". ")
+		}
+	}
+	else {
+		return ("There is no one to hug. ");
+	}
 }
 
 function Take (object) {
@@ -34,41 +76,46 @@ function Kill (victim) {
 }
 
 function Look (object) {
+	if(object === "") {
+		return("You are at " + current_location.name + ". " + current_location.description);
+	}
+	else {
 	return ("looking at " + object);
+	}
 }
 
 function check_for_verbs(response) {
 	if (response.substring(0,2) == "go") {
     	return Walk(response.substr(3));
 	}
-	if (response.substring(0,4) == "walk") {
+	else if (response.substring(0,4) == "walk") {
     	return Walk(response.substr(5));
 	}
-	if (response.substring(0,3) == "hug") {
+	else if (response.substring(0,3) == "hug") {
 		return Hug(response.substr(4));
 	}
-	if (response.substring(0,7) == "embrace") {
+	else if (response.substring(0,7) == "embrace") {
 		return Hug(response.substr(8));
 	}
-	if (response.substring(0,4) == "take") {
+	else if (response.substring(0,4) == "take") {
 		return Take(response.substr(5));
 	}
-	if (response.substring(0,3) == "get") {
+	else if (response.substring(0,3) == "get") {
 		return Take(response.substr(4));
 	}
-	if (response.substring(0,7) == "pick up") {
+	else if (response.substring(0,7) == "pick up") {
 		return Take(response.substr(8));
 	}
-	if (response.substring(0,4) == "kill") {
+	else if (response.substring(0,4) == "kill") {
 		return Kill(response.substr(5));
 	}
-	if (response.substring(0,6) == "murder") {
+	else if (response.substring(0,6) == "murder") {
 		return Kill(response.substr(7));
 	}
-	if (response.substring(0,7) == "look at") {
+	else if (response.substring(0,7) == "look at") {
 		return Look(response.substr(8));
 	}
-	if (response.substring(0,4) == "look") {
+	else if (response.substring(0,4) == "look") {
 		return Look(response.substr(5));
 	}
 	else {
@@ -81,15 +128,26 @@ function turn(response) {
     $("#history").append('<div class="human-response"> >' + response + '</div>') //reprint response
     $('#response').val(""); //clear response box
     turn_count ++;
-    if(check_for_verbs(response) === false){
+    var verb_response = check_for_verbs(response);
+    if(verb_response === false){
 	    computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.")
     }
     else {
-    	computer_print(check_for_verbs(response));
+    	computer_print(verb_response);
     }
-    computer_print("Your score is " + score + ".");
-    computer_print("This is turn " + turn_count + ".")
-    computer_print("You are at " + current_location.name);
+    score_update(score);
+    turn_update(turn_count);
+    var hug_count = 0;
+    var people_count = 0;
+	for(var key in npcs) {
+		people_count++;
+		if (npcs[key].hugged === true) {
+			hug_count++;
+		}
+	}
+	if (hug_count === people_count) {
+		computer_print("You are a winner");
+	}
 }
 
 //score
