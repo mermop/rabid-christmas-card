@@ -229,7 +229,7 @@ function turn(response) {
 
 
 $("#response").keyup(function(event){
-    if(event.keyCode == 13){
-    	turn($('#response').val());
-    }
+  if(event.keyCode == 13){
+    turn($('#response').val());
+  }
 });
