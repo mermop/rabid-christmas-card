@@ -20,7 +20,7 @@ function turn_update(turn) {
 }
 
 var Help = function (args) {
-  return "Here are some helpful commands: look, go [DIRECTION], greet";
+  return "Here are some helpful commands: look, go [DIRECTION], greet, inventory";
 };
 
 function Walk (dir) {
