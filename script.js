@@ -21,7 +21,7 @@ function turn_update(turn) {
 
 var Help = function (args) {
   return "Here are some helpful commands: look, go [DIRECTION], greet";
-}
+};
 
 function Walk (dir) {
 	var dir = dir.toLowerCase();
@@ -92,7 +92,7 @@ function Take (object) {
 }
 
 function Kill (victim) {
-	return ("killing " + victim)
+	return ("killing " + victim);
 }
 
 function Look (object) {
@@ -110,7 +110,7 @@ function Look (object) {
 	else {
 		if(current_location.npcs) {
 			if(current_location.npcs.indexOf(object) > -1) {
-				return (npcs[object].lines.encounter)
+				return (npcs[object].lines.encounter);
 			}
 		}
 		return ("looking at " + object);
@@ -121,10 +121,10 @@ function Greet (person) {
 	var person = person.toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(person) > -1) {
-			return (npcs[person].lines.greet)
+			return (npcs[person].lines.greet);
 		}
 		else {
-			return (recipient + "can't hear you. You are shouting into the void and you look like an idiot.")
+			return (recipient + "can't hear you. You are shouting into the void and you look like an idiot.");
 		}
 	}
 	else {
@@ -200,15 +200,15 @@ function check_for_verbs(response) {
 
 
 function turn(response) {
-    $("#history").append('<div class="human-response"> >' + response + '</div>') //reprint response
+    $("#history").append('<div class="human-response"> >' + response + '</div>'); //reprint response
     $('#response').val(""); //clear response box
     turn_count ++;
     var verb_response = check_for_verbs(response);
     if(verb_response === false){
-	    computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.")
+      computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.");
     }
     else {
-    	computer_print(verb_response);
+      computer_print(verb_response);
     }
     score_update(score);
     turn_update(turn_count);
@@ -230,6 +230,6 @@ function turn(response) {
 
 $("#response").keyup(function(event){
     if(event.keyCode == 13){
-    	turn($('#response').val())
+    	turn($('#response').val());
     }
 });
