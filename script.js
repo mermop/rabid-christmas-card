@@ -110,9 +110,11 @@ function Kill (victim) {
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(victim) > -1) {
       var with_item = kill_match_array[1];
-      if (with_item) {
-  			win_status = "lose";
+      if (inventory.indexOf(with_item.trim()) > -1) {
         return "You use " + with_item + " to brutally slay " + victim + ".";
+
+      } else if (with_item) {
+        return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
       } else {
         win_status = "lose";
   			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
