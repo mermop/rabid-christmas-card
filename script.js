@@ -218,7 +218,7 @@ function check_for_verbs(response) {
 
 
 function turn(response) {
-    $("#history").append('<div class="human-response"> >' + response + '</div>'); //reprint response
+    $("#history").append('<div class="human-response"> > ' + response + '</div>'); //reprint response
     $('#response').val(""); //clear response box
     turn_count ++;
     var verb_response = check_for_verbs(response);
