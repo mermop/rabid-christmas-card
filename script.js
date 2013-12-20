@@ -77,10 +77,17 @@ function Kill (victim) {
 
 function Look (object) {
 	if(object === "") {
-		return("You are at " + current_location.name + ". " + current_location.description);
+		var what_to_return = "You are at " + current_location.name + ". " + current_location.description;
+		var dirs = ["north", "south", "east", "west"];
+		for (var i = 0; i < dirs.length; i++ ){
+			if (current_location.directions[dirs[i]] != "nope") {
+				what_to_return = what_to_return + "To the " + dirs[i] + " is " + locations[current_location.directions[dirs[i]]].name + ". ";
+			}
+		}
+		return (what_to_return);
 	}
 	else {
-	return ("looking at " + object);
+		return ("looking at " + object);
 	}
 }
 
