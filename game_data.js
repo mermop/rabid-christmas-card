@@ -211,10 +211,10 @@ var images = {
       "<pre>"+
       "" +"\n"+
       "                ---------------------------------------------------" +"\n"+ 
-      "                         SEASONS GREETINGS FROM FROM RABID" +"\n"+
+      "                         SEASONS GREETINGS FROM RABID" +"\n"+
       "                ---------------------------------------------------" +"\n"+ 
       "" +"\n"+
-      "                   May a rabit, a bird, and a mouse with ladder" +"\n"+
+      "                   May a rabbit, a bird, and a mouse with ladder" +"\n"+
       "                   decorate your tree." +"\n"+
       "" +"\n"+
       "" +"\n"+
