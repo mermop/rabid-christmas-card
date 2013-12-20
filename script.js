@@ -93,11 +93,18 @@ function Take (object) {
 }
 
 function Kill (victim) {
-	var victim = victim.toLowerCase();
+  var kill_match_array = victim.split(" with ")
+	var victim = kill_match_array[0].toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(victim) > -1) {
-			win_status = "lose";
-			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
+      var with_item = kill_match_array[1];
+      if (with_item) {
+  			win_status = "lose";
+        return "You use " + with_item + " to brutally slay " + victim + ".";
+      } else {
+        win_status = "lose";
+  			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
+      }
 		}
 	}
 	return ("killing " + victim);
