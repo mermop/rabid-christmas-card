@@ -166,9 +166,12 @@ function check_for_verbs(response) {
 	else if (response.match(/^embrace/i)) {
 		return Hug(response.substr(8));
 	}
-	else if (response.match(/^take/i)) {
-		return Take(response.substr(5));
-	}
+  else if (response.match(/^take/i)) {
+    return Take(response.substr(5));
+  }
+  else if (response.match(/^steal/i)) {
+    return Take(response.substr(6));
+  }
 	else if (response.match(/^get/i)) {
 		return Take(response.substr(4));
 	}
