@@ -6,6 +6,7 @@ var score = 0;
 var turn_count = 0;
 var inventory = ["christmas_card"]
 var current_location = locations.outside;
+var win_status = "no";
 
 function computer_print(response) {
 	$("#history").append('<div class="computer-response">' + response + '</div>');
@@ -92,6 +93,13 @@ function Take (object) {
 }
 
 function Kill (victim) {
+	var victim = victim.toLowerCase();
+	if(current_location.npcs) {
+		if(current_location.npcs.indexOf(victim) > -1) {
+			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
+			win_status = "lose";
+		}
+	}
 	return ("killing " + victim);
 }
 
@@ -224,7 +232,13 @@ function turn(response) {
 		}
 	}
 	if (hug_count === people_count) {
-		computer_print("You are a winner");
+		win_status = "win";
+	}
+	if(win_status = "win") {
+		$('#response').remove();
+	}
+	if(win_status = "lose") {
+		$('#response').remove();
 	}
 }
 
