@@ -77,12 +77,16 @@ var locations = {
 
 var objects = {
   christmas_card: {
-    name: "A Christmas card from Rabid",
+    name: "a Christmas card from Rabid",
     on_look: "The Christmas card reads: 'Merry Christmas from Rabid. We are on holidays from December 20 until January 6.' There is an excellent picture in it, but you feel like you can't describe it until you finish the game. "
   },
   bike: {
-    name: "A bike",
+    name: "a bike",
     on_look: "The bike is yellow. "
+  },
+  cat: {
+    name: "a cat",
+    on_look: "The cat is adorable. "
   }
 }
 

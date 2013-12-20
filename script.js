@@ -4,6 +4,7 @@
 
 var score = 0;
 var turn_count = 0;
+var inventory = ["christmas_card"]
 var current_location = locations.outside;
 
 function computer_print(response) {
@@ -74,7 +75,20 @@ function Hug (recipient) {
 }
 
 function Take (object) {
-	return ("taking " + object)
+	var object = object.toLowerCase();
+	if(current_location.objects) {
+		var index = current_location.objects.indexOf(object);
+		if(index > -1) {
+			inventory.push(current_location.objects.splice(index, 1)[0]);
+			return ("You have picked up " + object + ". ")
+		}
+		else {
+			return ("That is not here. You grab feebly at empty air.");
+		}
+	}
+	else {
+		return ("There is nothing here to take. ");
+	}
 }
 
 function Kill (victim) {
@@ -118,9 +132,27 @@ function Greet (person) {
 	}
 }
 
+function Object_Namer(object) {
+	return objects[object].name
+}
+
+function Inventory() {
+	var inventory_string = "";
+		for(i = 0; i < inventory.length; i ++) {
+			inventory_string = inventory_string + Object_Namer(inventory[i]);
+			if(i !== inventory.length - 1){
+				inventory_string = inventory_string + " and ";
+			}
+		}
+	return "You are carrying " + inventory_string + ". ";
+}
+
 function check_for_verbs(response) {
   if (response.match(/^help/i)) {
     return Help();
+  }
+  if (response.match(/^inventory/i)) {
+    return Inventory();
   }
 	else if (response.match(/^go/i)) {
     return Walk(response.substr(3));
