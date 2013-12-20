@@ -18,6 +18,10 @@ function turn_update(turn) {
 	$("#turn").text("Turn: " + turn);
 }
 
+var Help = function (args) {
+  return "Here are some helpful commands: look, go [DIRECTION], greet";
+}
+
 function Walk (dir) {
 	var dirs = ["north", "south", "east", "west"];
 	if(dirs.indexOf(dir) > -1) {
@@ -50,16 +54,16 @@ function Hug (recipient) {
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(recipient) > -1) {
 			if(npcs[recipient].hugged === true){
-				return (npcs[recipient].lines.hug)
+				return (npcs[recipient].lines.hug);
 			}
 			else {
 				npcs[recipient].hugged = true;
 				score++;
-				return (npcs[recipient].lines.hug + "You feel accomplished, like you are closer to winning this silly game. ")
+				return (npcs[recipient].lines.hug + "You feel accomplished, like you are closer to winning this silly game. ");
 			}
 		}
 		else {
-			return ("You can't hug " + recipient + ". ")
+			return ("You can't hug " + recipient + ". ");
 		}
 	}
 	else {
@@ -111,11 +115,14 @@ function Greet (person) {
 }
 
 function check_for_verbs(response) {
-	if (response.substring(0,2) == "go") {
-    	return Walk(response.substr(3));
+  if (response.match(/^help/i)) {
+    return Help();
+  }
+	else if (response.substring(0,2) == "go") {
+    return Walk(response.substr(3));
 	}
 	else if (response.substring(0,4) == "walk") {
-    	return Walk(response.substr(5));
+    return Walk(response.substr(5));
 	}
 	else if (response.substring(0,3) == "hug") {
 		return Hug(response.substr(4));
