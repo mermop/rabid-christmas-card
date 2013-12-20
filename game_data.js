@@ -72,7 +72,7 @@ var locations = {
     },
     npcs: ["rob", "megan", "breccan", "merrin", "lachlan", "matt", "eoin"]
   }
-}
+};
 
 
 var objects = {
@@ -84,7 +84,7 @@ var objects = {
     name: "A bike",
     on_look: "The bike is yellow. "
   }
-}
+};
 
 var npcs = {
   josh: {
@@ -119,7 +119,7 @@ var npcs = {
     name: "Breccan McLeod",
     lines:{
       encounter: [
-        "Breccan sees you coming, smiles, and swivels his chair around to greet you. You meet his eyes and he smiles. \"Greetings,\" he says. " 
+        "Breccan sees you coming, smiles, and swivels his chair around to greet you. You meet his eyes and he smiles. \"Greetings,\" he says. "
       ],
       greet: [
         "Breccan smiles at you. \"How have you been?\" he asks. As you answer, he nods, and asks follow-up questions. You get the feeling he's really glad you visited. ",
@@ -133,7 +133,7 @@ var npcs = {
     name: "Merrin Macleod",
     lines:{
       encounter: [
-        "Merrin is staring intently at the computer nestled in the chaos atop her desk. She hears your approach and turns to face you; her face lights up when she sees it's you. She waves. " 
+        "Merrin is staring intently at the computer nestled in the chaos atop her desk. She hears your approach and turns to face you; her face lights up when she sees it's you. She waves. "
       ],
       greet: [
         "Merrin grins and waves at you. ",
@@ -147,7 +147,7 @@ var npcs = {
     name: "Eoin Kelly",
     lines:{
       encounter: [
-        "Eoin, that burly and joyous Irish gentleman, is neatly writing notes on a piece of A4 paper. " 
+        "Eoin, that burly and joyous Irish gentleman, is neatly writing notes on a piece of A4 paper. "
       ],
       greet: [
         "'Hallo,' says Eoin in a rich Irish baritone. ",
@@ -161,7 +161,7 @@ var npcs = {
     name: "Matt Hartley",
     lines:{
       encounter: [
-        "Matt has his headphones on and is deep in thought, enthralled by the inner workings of Ruby on Rails and the Two Door Cinema Club album being routed into his ears. " 
+        "Matt has his headphones on and is deep in thought, enthralled by the inner workings of Ruby on Rails and the Two Door Cinema Club album being routed into his ears. "
       ],
       greet: [
         "You greet Matt and he takes a second to disconnect himself from his current thoughts, but when he does his eyes light up and he smiles. 'Hey, it's good to see you!' he exclaims. ",
@@ -175,7 +175,7 @@ var npcs = {
     name: "Lachlan Priest",
     lines:{
       encounter: [
-        "Lachlan taps his feet as he speeds through the codebase. " 
+        "Lachlan taps his feet as he speeds through the codebase. "
       ],
       greet: [
         "'Lachlan,' you say. He continues coding, absorbed in his task. 'Lachlan,' you repeat louder. He turns his head and grins. 'Hiiiiiiii!!!' he cries. He looks like he wants a hug. ",
@@ -189,7 +189,7 @@ var npcs = {
     name: "Megan Bowra-Dean",
     lines:{
       encounter: [
-        "Megan is chuckling to herself, quietly amused by some database queries. 'Hehehe. Those noobs,' she gently chides. " 
+        "Megan is chuckling to herself, quietly amused by some database queries. 'Hehehe. Those noobs,' she gently chides. "
       ],
       greet: [
         "Momentary confusion subsides into a smile. 'I wasn't expecting you!' she delightedly cries. ",
@@ -199,4 +199,4 @@ var npcs = {
       ],
     }
   },
-}
+};
