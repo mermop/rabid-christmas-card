@@ -234,10 +234,10 @@ function turn(response) {
 	if (hug_count === people_count) {
 		win_status = "win";
 	}
-	if(win_status = "win") {
+	if(win_status === "win") {
 		$('#response').remove();
 	}
-	if(win_status = "lose") {
+	if(win_status === "lose") {
 		$('#response').remove();
 	}
 }
