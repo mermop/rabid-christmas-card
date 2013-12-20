@@ -7,6 +7,7 @@ var turn_count = 0;
 var inventory = ["christmas_card"]
 var current_location = locations.outside;
 var win_status = "no";
+var people_count = 0;
 
 function computer_print(response) {
 	$("#history").append('<div class="computer-response">' + response + '</div>');
@@ -18,6 +19,17 @@ function score_update(score) {
 
 function turn_update(turn) {
 	$("#turn").text("Turn: " + turn);
+}
+
+function check_for_win(turn) {
+   for(var key in npcs) {
+      if ( ! npcs[key].hugged === true) {
+         return false
+      }
+   }
+
+   win_game();
+   return true
 }
 
 var Help = function (args) {
@@ -217,7 +229,17 @@ function check_for_verbs(response) {
 }
 
 
+function win_game() {
+   win_status = "win";
+
+   $('.container').html(images['success_christmas_tree']);
+   $('.container').css('padding', "auto 0 auto 0;");
+   $('.container').css('max-width', "1000px");
+}
+
+
 function turn(response) {
+
     $("#history").append('<div class="human-response"> > ' + response + '</div>'); //reprint response
     $('#response').val(""); //clear response box
     turn_count ++;
@@ -230,20 +252,9 @@ function turn(response) {
     }
     score_update(score);
     turn_update(turn_count);
-    var hug_count = 0;
-    var people_count = 0;
-	for(var key in npcs) {
-		people_count++;
-		if (npcs[key].hugged === true) {
-			hug_count++;
-		}
-	}
-	if (hug_count === people_count) {
-		win_status = "win";
-	}
-	if(win_status === "win") {
-		$('#response').remove();
-	}
+
+    check_for_win(turn);
+
 	if(win_status === "lose") {
 		$('#response').remove();
 	}
