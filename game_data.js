@@ -91,7 +91,7 @@ var npcs = {
     name: "Josh Forde",
     lines:{
       encounter: [
-        "Josh sees you coming from the corner of his eye and his expression of intense focus turns into a wide grin. He stands up from his chair to face you. \"It's great of you to visit!\" he exclaims. He looks like he wants a HUG. "
+        "Josh is absorbed in a video of Mr Krabs from Spongebob explaining his fiscal passions. Josh sees you coming from the corner of his eye and his expression of intense focus turns into a wide grin. He stands up from his chair to face you. \"It's great of you to visit!\" he exclaims. He looks like he wants a HUG. "
       ],
       greet: [
         "Josh smiles widely at you. ",
@@ -111,7 +111,7 @@ var npcs = {
         "Rob leans in conspiratorially. \"Do you know anything about chemistry?\" he asks. ",
       ],
       hug: [
-        "You hug Rob. A solid embrace. ",
+        "You hug Rob. A solid embrace, but now you can't find your wallet. ",
       ],
     }
   },
@@ -147,27 +147,27 @@ var npcs = {
     name: "Eoin Kelly",
     lines:{
       encounter: [
-        "" 
+        "Eoin, that burly and joyous Irish gentleman, is neatly writing notes on a piece of A4 paper. " 
       ],
       greet: [
-        "",
+        "'Hallo,' says Eoin in a rich Irish baritone. ",
       ],
       hug: [
-        "",
+        "You hug Eoin. You feel yourself mentally describing it as a 'bear hug'. His sonorous baritone chuckle echoes across the room. ",
       ],
     }
   },
   matt: {
-    name: "Mathew Hartley",
+    name: "Matt Hartley",
     lines:{
       encounter: [
-        "" 
+        "Matt has his headphones on and is deep in thought, enthralled by the inner workings of Ruby on Rails and the Two Door Cinema Club album being routed into his ears. " 
       ],
       greet: [
-        "",
+        "You greet Matt and he takes a second to disconnect himself from his current thoughts, but when he does his eyes light up and he smiles. 'Hey, it's good to see you!' he exclaims. ",
       ],
       hug: [
-        "",
+        "You hug Matt. He rubs your back appreciatively. ",
       ],
     }
   },
@@ -175,13 +175,13 @@ var npcs = {
     name: "Lachlan Priest",
     lines:{
       encounter: [
-        "" 
+        "Lachlan taps his feet as he speeds through the codebase. " 
       ],
       greet: [
-        "",
+        "'Lachlan,' you say. He continues coding, absorbed in his task. 'Lachlan,' you repeat louder. He turns his head and grins. 'Hiiiiiiii!!!' he cries. He looks like he wants a hug. ",
       ],
       hug: [
-        "",
+        "He bounds over to you and gives an energetic embrace. You feel safe in the arms of such an experienced hugger. ",
       ],
     }
   },
@@ -189,13 +189,13 @@ var npcs = {
     name: "Megan Bowra-Dean",
     lines:{
       encounter: [
-        "" 
+        "Megan is chuckling to herself, quietly amused by some database queries. 'Hehehe. Those noobs,' she gently chides. " 
       ],
       greet: [
-        "",
+        "Momentary confusion subsides into a smile. 'I wasn't expecting you!' she delightedly cries. ",
       ],
       hug: [
-        "",
+        "You note the floral scent emanating from Megan's long, beautiful hair as she embraces you. ",
       ],
     }
   },

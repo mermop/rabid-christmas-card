@@ -87,7 +87,26 @@ function Look (object) {
 		return (what_to_return);
 	}
 	else {
+		if(current_location.npcs) {
+			if(current_location.npcs.indexOf(object) > -1) {
+				return (npcs[object].lines.encounter)
+			}
+		}
 		return ("looking at " + object);
+	}
+}
+
+function Greet (person) {
+	if(current_location.npcs) {
+		if(current_location.npcs.indexOf(person) > -1) {
+			return (npcs[person].lines.greet)
+		}
+		else {
+			return (recipient + "can't hear you. You are shouting into the void and you look like an idiot.")
+		}
+	}
+	else {
+		return ("There is no one to greet here.");
 	}
 }
 
@@ -124,6 +143,12 @@ function check_for_verbs(response) {
 	}
 	else if (response.substring(0,4) == "look") {
 		return Look(response.substr(5));
+	}
+	else if (response.substring(0,5) == "greet") {
+		return Greet(response.substr(6));
+	}
+	else if (response.substring(0,7) == "talk to") {
+		return Greet(response.substr(8));
 	}
 	else {
 		return false;
