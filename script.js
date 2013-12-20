@@ -96,8 +96,8 @@ function Kill (victim) {
 	var victim = victim.toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(victim) > -1) {
-			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
 			win_status = "lose";
+			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
 		}
 	}
 	return ("killing " + victim);
