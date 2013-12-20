@@ -23,6 +23,7 @@ var Help = function (args) {
 };
 
 function Walk (dir) {
+	var dir = dir.toLowerCase();
 	var dirs = ["north", "south", "east", "west"];
 	if(dirs.indexOf(dir) > -1) {
 		var destination_location = current_location.directions[dir];
@@ -51,6 +52,7 @@ function Walk (dir) {
 }
 
 function Hug (recipient) {
+	var recipient = recipient.toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(recipient) > -1) {
 			if(npcs[recipient].hugged === true){
@@ -80,6 +82,7 @@ function Kill (victim) {
 }
 
 function Look (object) {
+	var object = object.toLowerCase();
 	if(object === "") {
 		var what_to_return = "You are at " + current_location.name + ". " + current_location.description;
 		var dirs = ["north", "south", "east", "west"];
@@ -101,6 +104,7 @@ function Look (object) {
 }
 
 function Greet (person) {
+	var person = person.toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(person) > -1) {
 			return (npcs[person].lines.greet);
@@ -118,43 +122,43 @@ function check_for_verbs(response) {
   if (response.match(/^help/i)) {
     return Help();
   }
-	else if (response.substring(0,2) == "go") {
+	else if (response.match(/^go/i)) {
     return Walk(response.substr(3));
 	}
-	else if (response.substring(0,4) == "walk") {
+	else if (response.match(/^walk/i)) {
     return Walk(response.substr(5));
 	}
-	else if (response.substring(0,3) == "hug") {
+	else if (response.match(/^hug/i)) {
 		return Hug(response.substr(4));
 	}
-	else if (response.substring(0,7) == "embrace") {
+	else if (response.match(/^embrace/i)) {
 		return Hug(response.substr(8));
 	}
-	else if (response.substring(0,4) == "take") {
+	else if (response.match(/^take/i)) {
 		return Take(response.substr(5));
 	}
-	else if (response.substring(0,3) == "get") {
+	else if (response.match(/^get/i)) {
 		return Take(response.substr(4));
 	}
-	else if (response.substring(0,7) == "pick up") {
+	else if (response.match(/^pick up/i)) {
 		return Take(response.substr(8));
 	}
-	else if (response.substring(0,4) == "kill") {
+	else if (response.match(/^kill/i)) {
 		return Kill(response.substr(5));
 	}
-	else if (response.substring(0,6) == "murder") {
+	else if (response.match(/^murder/i)) {
 		return Kill(response.substr(7));
 	}
-	else if (response.substring(0,7) == "look at") {
+	else if (response.match(/^look at/i)) {
 		return Look(response.substr(8));
 	}
-	else if (response.substring(0,4) == "look") {
+	else if (response.match(/^look/i)) {
 		return Look(response.substr(5));
 	}
-	else if (response.substring(0,5) == "greet") {
+	else if (response.match(/^greet/i)) {
 		return Greet(response.substr(6));
 	}
-	else if (response.substring(0,7) == "talk to") {
+	else if (response.match(/^talk to/i)) {
 		return Greet(response.substr(8));
 	}
 	else {
