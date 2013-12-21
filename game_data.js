@@ -7,7 +7,8 @@ var locations = {
       south: "nope",
       west: "nope",
       east: "nope"
-    }
+    },
+    corpses: []
   },
   stairs: {
     name:"Enspiral stairwell",
@@ -17,7 +18,8 @@ var locations = {
       south: "outside",
       west: "nope",
       east: "nope"
-    }
+    },
+    corpses: []
   },
   entrance: {
     name:"Enspiral entrance",
@@ -28,7 +30,8 @@ var locations = {
       west: "toilets",
       east: "kitchen"
     },
-    objects: ["bike"]
+    objects: ["bike"],
+    corpses: []
   },
   toilets: {
     name:"Toilets",
@@ -38,7 +41,8 @@ var locations = {
       south: "nope",
       west: "nope",
       east: "entrance"
-    }
+    },
+    corpses: []
   },
   kitchen: {
     name:"Kitchen",
@@ -50,7 +54,8 @@ var locations = {
       east: "nope"
     },
     npcs: ["rob", "matt"],
-    objects: ["coffee grinder", "teapot"]
+    objects: ["coffee grinder", "teapot"],
+    corpses: []
   },
   enspiral_space: {
     name:"Inside Enspiral Space",
@@ -61,7 +66,8 @@ var locations = {
       west: "boardroom",
       east: "backspace"
     },
-    npcs: ["breccan"]
+    npcs: ["breccan"],
+    corpses: []
   },
   backspace: {
     name:"The back space",
@@ -73,7 +79,8 @@ var locations = {
       east: "nope"
     },
     npcs: ["merrin"],
-    objects: ["xylophone", "box cutter"]
+    objects: ["xylophone", "box cutter"],
+    corpses: []
   },
   boardroom: {
     name:"Board Room",
@@ -85,7 +92,8 @@ var locations = {
       east: "enspiral_space"
     },
     npcs: ["eoin"],
-    objects: ["remote"]
+    objects: ["remote"],
+    corpses: []
   },
   desks: {
     name:"First desks",
@@ -97,7 +105,8 @@ var locations = {
       east: "nope"
     },
     npcs: ["josh", "hippies"],
-    objects: ["ukulele", "hot sauce"]
+    objects: ["ukulele", "hot sauce"],
+    corpses: []
   },
   rabid: {
     name:"Rabid land",
@@ -109,7 +118,8 @@ var locations = {
       east: "nope"
     },
     npcs: ["megan", "lachlan"],
-    objects: ["bottle", "nerf gun", "copy of The Art of Computer Programming"]
+    objects: ["bottle", "nerf gun", "copy of The Art of Computer Programming"],
+    corpses: []
   }
 };
 

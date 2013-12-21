@@ -6,6 +6,7 @@ var win_status = "no";
 var people_count = 0;
 var rampage = false;
 var kill_count = 0;
+var innocent_victims = [];
 
 function computer_print(response) {
 	$("#history").append('<div class="computer-response">' + response + '</div>');
@@ -53,6 +54,12 @@ function Walk (dir) {
 		if(current_location.npcs) {
 			for (var i = 0; i < current_location.npcs.length; i++) {
 				what_to_return = what_to_return + npcs[current_location.npcs[i]].name + " is here. ";
+			}
+		}
+		if(current_location.corpses) {
+			for (var i = 0; i < current_location.corpses.length; i++) {
+				console.log("hello");
+				what_to_return = what_to_return + "The corpse of " + npcs[current_location.corpses[i]].name + " is here. ";
 			}
 		}
 		return (what_to_return);
@@ -110,20 +117,22 @@ function Kill (victim) {
 	var victim = kill_match_array[0].toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(victim) > -1) {
-      var with_item = kill_match_array[1];
-      if (inventory.indexOf(with_item.trim()) > -1) {
-        return "You use " + with_item + " to brutally slay " + victim + ".";
-        rampage = true;
-
-      } else if (with_item) {
-        return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
-      } else {
-        win_status = "lose";
-  			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
-      }
+		    var with_item = kill_match_array[1];
+		    if (inventory.indexOf(with_item.trim()) > -1) {
+		        rampage = true;
+		        score = score - 10;
+				var index = current_location.npcs.indexOf(victim);
+		        current_location.corpses.push(current_location.npcs.splice(index,1)[0]);
+		        return "You use " + with_item + " to brutally slay " + victim + ". " + npcs[victim].lines.death;
+		    } else if (with_item) {
+		        return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
+		    } else {
+		        win_status = "lose";
+	  			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
+		    }
+			return ("You look at your fists. You look at " + victim + ". You look back at your fists again. You can't kill " + victim + " without a weapon. I hasten to add that murder is highly illegal and ethically indefensible. Please don't kill " + victim + ". ");
 		}
 	}
-	return ("You look at your fists. You look at " + victim + ". You look back at your fists again. You can't kill " + victim + " without a weapon. I hasten to add that murder is highly illegal and ethically indefensible. Please don't kill " + victim ". ");
 }
 
 function Look (object) {
@@ -144,6 +153,12 @@ function Look (object) {
 		if(current_location.npcs) {
 			for (var i = 0; i < current_location.npcs.length; i++) {
 				what_to_return = what_to_return + npcs[current_location.npcs[i]].name + " is here. ";
+			}
+		}
+		if(current_location.corpses) {
+			for (var i = 0; i < current_location.corpses.length; i++) {
+				console.log("hello");
+				what_to_return = what_to_return + "The corpse of " + npcs[current_location.corpses[i]].name + " is here. ";
 			}
 		}
 		return (what_to_return);
@@ -189,18 +204,58 @@ function Inventory() {
 }
 
 function check_for_verbs(response) {
-	var response = response.toLowerCase();
-	for(var key in verbs) {
-		for(i = 0; i < verbs[key].aliases.length; i++ ) {
-			if(response === verbs[key].aliases[i]) {
-				var cut_point = verbs[key].aliases[i].length + 1;
-				return verbs[key].funct + "(response.substr(" + cut_point + "));";
-			}
-		}
-	}
-	return false;
+  if (response.match(/^help/i)) {
+    return Help();
+  }
+  if (response.match(/^inventory/i)) {
+    return Inventory();
+  }
+    else if (response.match(/^go/i)) {
+    return Walk(response.substr(3));
+    }
+    else if (response.match(/^walk/i)) {
+    return Walk(response.substr(5));
+    }
+    else if (response.match(/^hug/i)) {
+        return Hug(response.substr(4));
+    }
+    else if (response.match(/^embrace/i)) {
+        return Hug(response.substr(8));
+    }
+  else if (response.match(/^take/i)) {
+    return Take(response.substr(5));
+  }
+  else if (response.match(/^steal/i)) {
+    return Take(response.substr(6));
+  }
+    else if (response.match(/^get/i)) {
+        return Take(response.substr(4));
+    }
+    else if (response.match(/^pick up/i)) {
+        return Take(response.substr(8));
+    }
+    else if (response.match(/^kill/i)) {
+        return Kill(response.substr(5));
+    }
+    else if (response.match(/^murder/i)) {
+        return Kill(response.substr(7));
+    }
+    else if (response.match(/^look at/i)) {
+        return Look(response.substr(8));
+    }
+    else if (response.match(/^look/i)) {
+        return Look(response.substr(5));
+    }
+    else if (response.match(/^greet/i)) {
+        return Greet(response.substr(6));
+    }
+    else if (response.match(/^talk to/i)) {
+        return Greet(response.substr(8));
+    }
+    else {
+        return false;
+    }
 }
-
 function win_game() {
    win_status = "win";
 
@@ -228,8 +283,11 @@ function turn(response) {
     }
     score_update(score);
     turn_update(turn_count);
-
     check_for_win(turn);
+
+    if(rampage === true){
+    	$('body').css('color', '#FF0000')
+    }
 
 	if(win_status === "lose") {
 		$('#response').remove();
