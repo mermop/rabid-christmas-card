@@ -1,7 +1,7 @@
 var locations = {
   outside: {
     name:"Outside Enspiral",
-    description:"You are outside Enspiral Space. ",
+    description:"You stand on Allen Street, outside the building that holds Enspiral Space. A sign reading FOOT LAW sways in the characteristic Wellington wind. ",
     directions: {
       north: "stairs",
       south: "nope",
@@ -10,8 +10,8 @@ var locations = {
     }
   },
   stairs: {
-    name:"Enspiral stairs",
-    description:"The stairs smell faintly of cleaning supplies. ",
+    name:"Enspiral stairwell",
+    description:"You are in the stairwell of 22 Allen Street. The lift appears to be permanently slightly ajar, not quite open enough for you to enter. The stairs smell faintly of cleaning supplies. ",
     directions: {
       north: "entrance",
       south: "outside",
@@ -21,14 +21,14 @@ var locations = {
   },
   entrance: {
     name:"Enspiral entrance",
-    description:"The sound of the coffee grinder doesn't quite drown out the excited scheming taking place in the kitchen. ",
+    description:"You are in the entranceway of Enspiral Space. The sound of the coffee grinder doesn't quite drown out the excited scheming taking place in the kitchen. ",
     directions: {
       north: "enspiral_space",
       south: "stairs",
       west: "toilets",
-      east: "nope"
+      east: "kitchen"
     },
-    objects: ["bike", "coffee grinder"]
+    objects: ["bike"]
   },
   toilets: {
     name:"Toilets",
@@ -40,37 +40,76 @@ var locations = {
       east: "entrance"
     }
   },
+  kitchen: {
+    name:"Kitchen",
+    description:"You are in the kitchen of Enspiral Space. The scent of freshly ground coffee mingles with the smell of halloumi someone is cooking on the grill. ",
+    directions: {
+      north: "nope",
+      south: "nope",
+      west: "entrance",
+      east: "nope"
+    },
+    npcs: ["rob", "matt"],
+    objects: ["coffee grinder", "teapot"]
+  },
   enspiral_space: {
     name:"Inside Enspiral Space",
-    description:"You have entered Enspiral Space. ",
+    description:"You have entered Enspiral Space. The walls are covered with posters promoting various events organised by schemers within the office. ",
     directions: {
       north: "desks",
       south: "entrance",
-      west: "nope",
+      west: "boardroom",
+      east: "backspace"
+    },
+    npcs: ["breccan"]
+  },
+  backspace: {
+    name:"The back space",
+    description:"You are in the back space, also known as the server room and, according to the chalk sign on the door, the 'Magical Room of Magicalness'. Servers hum. Ceiling-high shelves are piled up with stuff. ",
+    directions: {
+      north: "nope",
+      south: "nope",
+      west: "enspiral_space",
       east: "nope"
-    }
+    },
+    npcs: ["merrin"],
+    objects: ["xylophone", "box cutter"]
+  },
+  boardroom: {
+    name:"Board Room",
+    description:"You are in the Enspiral Space boardroom. A diagram on the whiteboard attempts to explain some kind of social enterprise; you can't make out exactly what the excited sprawl says, but it includes the phrases 'boat', 'synergy', and, concerningly, 'world domination'. ",
+    directions: {
+      north: "nope",
+      south: "nope",
+      west: "nope",
+      east: "enspiral_space"
+    },
+    npcs: ["eoin"],
+    objects: ["remote"]
   },
   desks: {
     name:"First desks",
-    description:"To your north is Rabid. ",
+    description:"You stand between two rows of long white desks which reach up to the windows. There is an industrious murmur emanating from the Enspiralites on either side. ",
     directions: {
       north: "rabid",
       south: "enspiral_space",
       west: "nope",
       east: "nope"
     },
-    npcs: ["josh", "hippies"]
+    npcs: ["josh", "hippies"],
+    objects: ["ukulele", "hot sauce"]
   },
   rabid: {
     name:"Rabid land",
-    description:"The den of iniquity. ",
+    description:"You stand in the natural habitat of the Rabidier. The walls are somewhat chaotically decorated with postcards, system architecture diagrams, and star charts. ",
     directions: {
       north: "nope",
       south: "desks",
       west: "nope",
       east: "nope"
     },
-    npcs: ["rob", "megan", "breccan", "merrin", "lachlan", "matt", "eoin"]
+    npcs: ["megan", "lachlan"],
+    objects: ["bottle", "nerf gun", "copy of The Art of Computer Programming"]
   }
 };
 
