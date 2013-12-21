@@ -29,7 +29,7 @@ function check_for_win(turn) {
 }
 
 var Help = function (args) {
-  return "Here are some helpful commands: look, go [DIRECTION], greet, inventory";
+  return "Here are some helpful commands: look, go [DIRECTION], greet, inventory, take";
 };
 
 function Walk (dir) {

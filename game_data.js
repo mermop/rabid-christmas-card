@@ -28,7 +28,7 @@ var locations = {
       west: "toilets",
       east: "nope"
     },
-    objects: ["bike"]
+    objects: ["bike", "coffee grinder"]
   },
   toilets: {
     name:"Toilets",
@@ -52,7 +52,7 @@ var locations = {
   },
   desks: {
     name:"First desks",
-    description:"You can see some hippies. To your north is Rabid. ",
+    description:"To your north is Rabid. ",
     directions: {
       north: "rabid",
       south: "enspiral_space",
@@ -100,12 +100,12 @@ var npcs = {
       ],
       greet: [
       "The hippies, as one, bleat hello."
-      ]
+      ],
       hug: [
       "You attempt to hug the homogenous mass of hippies, but they are too many and too far apart for your arms to encompass."
       ]
     }
-  }
+  },
   josh: {
     name: "Josh Forde",
     lines:{
