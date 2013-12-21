@@ -142,7 +142,10 @@ var npcs = {
       ],
       hug: [
       "You attempt to hug the homogenous mass of hippies, but they are too many and too far apart for your arms to encompass."
-      ]
+      ],
+      death: [
+        "The hippies lie prone on the floor. You try to count them but they are too many. Look, they were weird, and they were android drones controlled by some hippie mastermind, but they were kind. It was unnecessary to kill them. "
+      ],
     }
   },
   josh: {
@@ -156,6 +159,9 @@ var npcs = {
       ],
       hug: [
         "You hug Josh. He embraces you like a sibling and pats you on the back. \"I'm just so pleased to see you,\" he says. ",
+      ],
+      death: [
+        "Blood from Josh's corpse slowly pools on the wooden floor. His once-joyful face grins no more. Why did you do it? "
       ],
     }
   },
@@ -171,6 +177,9 @@ var npcs = {
       hug: [
         "You hug Rob. A solid embrace, but now you can't find your wallet. ",
       ],
+      death: [
+        "Rob seems smaller now that he is devoid of the mischievous character that once brought laughter and joy to the world. The injuries you so needlessly inflicted mar his body. You can stop now. You have done enough damage. "
+      ],
     }
   },
   breccan: {
@@ -184,6 +193,9 @@ var npcs = {
       ],
       hug: [
         "As you hug Breccan you note to yourself how nice his suit feels. ",
+      ],
+      death: [
+        "Breccan's long legs are sprawled at unnatural angles, his lovely suit ripped and stained by your barbarism. You have destroyed something beautiful. You can't take that back now. "
       ],
     }
   },
@@ -199,6 +211,9 @@ var npcs = {
       hug: [
         "You hug Merrin. \"Thank you so much for visiting,\" she says. ",
       ],
+      death: [
+        "Merrin's ginger hair is matted red with blood, her face twisted in horror. She created this game and you turned it against her. You are a monster. "
+      ],
     }
   },
   eoin: {
@@ -212,6 +227,9 @@ var npcs = {
       ],
       hug: [
         "You hug Eoin. You feel yourself mentally describing it as a 'bear hug'. His sonorous baritone chuckle echoes across the room. ",
+      ],
+      death: [
+        "Eoin's mangled corpse lies still on the ground. What is wrong with you? What did this sweet, gentle Irishman ever do to you? "
       ],
     }
   },
@@ -227,6 +245,9 @@ var npcs = {
       hug: [
         "You hug Matt. He rubs your back appreciatively. ",
       ],
+      death: [
+        "Music is still playing in Matt's headphones, a little way from his bloody corpse. The tinny sound of guitar wafts up to your ears. You don't deserve to hear this while Matt can't. It's just wrong. You are cruel and undeserving. "
+      ],
     }
   },
   lachlan: {
@@ -240,6 +261,9 @@ var npcs = {
       ],
       hug: [
         "He bounds over to you and gives an energetic embrace. You feel safe in the arms of such an experienced hugger. ",
+      ],
+      death: [
+        "Lachlan is unrecognisable in death, his characteristic energy stolen by a thoughtless, cruel murderer. Stolen by you. "
       ],
     }
   },
@@ -255,10 +279,89 @@ var npcs = {
       hug: [
         "You note the floral scent emanating from Megan's long, beautiful hair as she embraces you. ",
       ],
+      death: [
+        "Megan's face is mercifully obscured by her fine blonde hair. You can't see the expression belying the terror she felt in her last moments. It didn't have to be this way. "
+      ],
     }
   },
 };
 
+// Transitive: requires a subject and an object - [verb] [noun] with [noun]; [verb] [noun] to [noun]
+// Intransitive: requires one object only - [verb] [noun]
+// Alone: can be used alone - [verb]
+
+var verbs = {
+  look: {
+    aliases: ["look", "l", "look at"],
+    funct: "Look",
+    alone: true,
+    transitive: false,
+    intransitive: true
+  },
+  help: {
+    aliases: ["help", "h"],
+    funct: "Help",
+    alone: true,
+    transitive: false,
+    intransitive: false
+  },
+  inventory: {
+    aliases: ["inventory", "i"],
+    funct: "Inventory",
+    alone: true,
+    transitive: false,
+    intransitive: false
+  },
+  go: {
+    aliases: ["go", "walk"],
+    funct: "Go",
+    alone: false,
+    transitive: false,
+    intransitive: true
+  },
+  hug: {
+    aliases: ["hug", "embrace"],
+    funct: "Hug",
+    alone: false,
+    transitive: false,
+    intransitive: true
+  },
+  take: {
+    aliases: ["take", "pick up", "get", "steal"],
+    funct: "Take",
+    alone: false,
+    transitive: false,
+    intransitive: true
+  },
+  kill: {
+    aliases: ["kill", "attack", "murder"],
+    funct: "Kill",
+    alone: false,
+    transitive: true,
+    intransitive: false
+  },
+  greet: {
+    aliases: ["greet", "talk to"],
+    funct: "Greet",
+    alone: false,
+    transitive: false,
+    intransitive: true
+  },
+  ride: {
+    aliases: ["ride"],
+    funct: "Ride",
+    alone: false,
+    transitive: true,
+    intransitive: false
+  },
+  use: {
+    aliases: ["use"],
+    funct: "Use",
+    alone: false,
+    transitive: true,
+    intransitive: true
+  }
+}
 
 var images = {
   success_christmas_tree:  

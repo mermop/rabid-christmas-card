@@ -4,6 +4,8 @@ var inventory = ["christmas_card"]
 var current_location = locations.outside;
 var win_status = "no";
 var people_count = 0;
+var rampage = false;
+var kill_count = 0;
 
 function computer_print(response) {
 	$("#history").append('<div class="computer-response">' + response + '</div>');
@@ -108,6 +110,7 @@ function Kill (victim) {
       var with_item = kill_match_array[1];
       if (inventory.indexOf(with_item.trim()) > -1) {
         return "You use " + with_item + " to brutally slay " + victim + ".";
+        rampage = true;
 
       } else if (with_item) {
         return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
@@ -183,57 +186,16 @@ function Inventory() {
 }
 
 function check_for_verbs(response) {
-  if (response.match(/^help/i)) {
-    return Help();
-  }
-  if (response.match(/^inventory/i)) {
-    return Inventory();
-  }
-	else if (response.match(/^go/i)) {
-    return Walk(response.substr(3));
+	var response = response.toLowerCase();
+	for(var key in verbs) {
+		for(i = 0; i < verbs[key].aliases.length; i++ ) {
+			if(response === verbs[key].aliases[i]) {
+				var cut_point = verbs[key].aliases[i].length + 1;
+				return verbs[key].funct + "(response.substr(" + cut_point + "));";
+			}
+		}
 	}
-	else if (response.match(/^walk/i)) {
-    return Walk(response.substr(5));
-	}
-	else if (response.match(/^hug/i)) {
-		return Hug(response.substr(4));
-	}
-	else if (response.match(/^embrace/i)) {
-		return Hug(response.substr(8));
-	}
-  else if (response.match(/^take/i)) {
-    return Take(response.substr(5));
-  }
-  else if (response.match(/^steal/i)) {
-    return Take(response.substr(6));
-  }
-	else if (response.match(/^get/i)) {
-		return Take(response.substr(4));
-	}
-	else if (response.match(/^pick up/i)) {
-		return Take(response.substr(8));
-	}
-	else if (response.match(/^kill/i)) {
-		return Kill(response.substr(5));
-	}
-	else if (response.match(/^murder/i)) {
-		return Kill(response.substr(7));
-	}
-	else if (response.match(/^look at/i)) {
-		return Look(response.substr(8));
-	}
-	else if (response.match(/^look/i)) {
-		return Look(response.substr(5));
-	}
-	else if (response.match(/^greet/i)) {
-		return Greet(response.substr(6));
-	}
-	else if (response.match(/^talk to/i)) {
-		return Greet(response.substr(8));
-	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 function win_game() {
@@ -251,7 +213,12 @@ function turn(response) {
     turn_count ++;
     var verb_response = check_for_verbs(response);
     if(verb_response === false){
-      computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.");
+    	if (rampage === false) {
+	    	computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.");
+    	}
+    	else {
+    		computer_print("I'm glad I don't know what '" + response + "' means. I don't want to know. I don't nqeed the insight into your twisted mind.")
+    	}
     }
     else {
       computer_print(verb_response);
