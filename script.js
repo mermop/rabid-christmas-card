@@ -67,6 +67,9 @@ function Hug (recipient) {
 	var recipient = recipient.toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(recipient) > -1) {
+			if ( rampage === true ) {
+				return ("You reach out to embrace " + npcs[recipient].name + ". They cower in fear. You realise you are covered in the blood of their compatriots. " );
+			}
 			if(npcs[recipient].hugged === true){
 				return (npcs[recipient].lines.hug);
 			}
@@ -120,7 +123,7 @@ function Kill (victim) {
       }
 		}
 	}
-	return ("killing " + victim);
+	return ("You look at your fists. You look at " + victim + ". You look back at your fists again. You can't kill " + victim + " without a weapon. I hasten to add that murder is highly illegal and ethically indefensible. Please don't kill " + victim ". ");
 }
 
 function Look (object) {
@@ -217,7 +220,7 @@ function turn(response) {
 	    	computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.");
     	}
     	else {
-    		computer_print("I'm glad I don't know what '" + response + "' means. I don't want to know. I don't nqeed the insight into your twisted mind.")
+    		computer_print("I'm glad I don't know what '" + response + "' means. I don't want to know. I don't need the insight into your twisted mind.")
     	}
     }
     else {
