@@ -130,6 +130,16 @@ function Look (object) {
 				what_to_return = what_to_return + "To the " + dirs[i] + " is " + locations[current_location.directions[dirs[i]]].name + ". ";
 			}
 		}
+		if(current_location.objects) {
+			for (var i = 0; i < current_location.objects.length; i++) {
+				what_to_return = what_to_return + "There is a " + current_location.objects[i] + " here. ";
+			}
+		}
+		if(current_location.npcs) {
+			for (var i = 0; i < current_location.npcs.length; i++) {
+				what_to_return = what_to_return + npcs[current_location.npcs[i]].name + " is here. ";
+			}
+		}
 		return (what_to_return);
 	}
 	else {

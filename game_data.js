@@ -59,7 +59,7 @@ var locations = {
       west: "nope",
       east: "nope"
     },
-    npcs: ["josh"]
+    npcs: ["josh", "hippies"]
   },
   rabid: {
     name:"Rabid land",
@@ -91,6 +91,21 @@ var objects = {
 };
 
 var npcs = {
+  hippies: {
+    name: "The Hippies",
+    hugged: true,
+    lines: {
+      encounter: [
+      "The hippies have hidden the air conditioning remote control. They look smug. "
+      ],
+      greet: [
+      "The hippies, as one, bleat hello."
+      ]
+      hug: [
+      "You attempt to hug the homogenous mass of hippies, but they are too many and too far apart for your arms to encompass."
+      ]
+    }
+  }
   josh: {
     name: "Josh Forde",
     lines:{
