@@ -54,7 +54,7 @@ var locations = {
       east: "nope"
     },
     npcs: ["rob", "matt"],
-    objects: ["coffee grinder", "teapot"],
+    objects: ["grinder", "teapot"],
     corpses: []
   },
   enspiral_space: {
@@ -79,7 +79,7 @@ var locations = {
       east: "nope"
     },
     npcs: ["merrin"],
-    objects: ["xylophone", "box cutter"],
+    objects: ["boxcutter"],
     corpses: []
   },
   boardroom: {
@@ -105,7 +105,7 @@ var locations = {
       east: "nope"
     },
     npcs: ["josh", "hippies"],
-    objects: ["ukulele", "hot sauce"],
+    objects: ["ukulele", "hotsauce"],
     corpses: []
   },
   rabid: {
@@ -118,7 +118,7 @@ var locations = {
       east: "nope"
     },
     npcs: ["megan", "lachlan"],
-    objects: ["bottle", "nerf gun", "copy of The Art of Computer Programming"],
+    objects: ["bottle", "nerfgun"],
     corpses: []
   }
 };
@@ -131,11 +131,63 @@ var objects = {
   },
   bike: {
     name: "a bike",
-    on_look: "The bike is yellow. "
+    on_look: "The bike is yellow. ",
+    to_kill: "You tear apart the metal frame of the bike and stab every part into your victim. ",
+    kill_fail: "You throw the bike at your victim. It misses. You sheepishly pick it back up. "
   },
   cat: {
     name: "a cat",
-    on_look: "The cat is adorable. "
+    on_look: "The cat is adorable. ",
+    to_kill: "You shove the cat into your victim's mouth. The cat eviscerates their throat before both cat and human suffocate. ",
+    kill_fail: "Nobody is intimidated by you brandishing this adorable cat."
+  },
+  nerfgun: {
+    name: "a nerf gun",
+    on_look: "The nerf gun is bright and cheerful. ",
+    to_kill: "You shoot a nerf bullet at your victim. They are puzzled. You seize upon the opportunity to force the brightly coloured plastic weaponry into their brain through their nasal cavity. ",
+    kill_fail: "You shoot a nerf bullet at your victim. They are puzzled. So are you. "
+  },
+  bottle: {
+    name: "an empty bottle of wine",
+    on_look: "Once this was a cheap bottle of red. Now it is a cheap bottle of nothing.",
+    to_kill: "You smash the bottle on your victim's head and stab the jagged edges into their throat. ",
+    kill_fail: "You try to ply your victim with alcohol to lower their defences but the bottle is empty. That is a key part of the description. "
+  },
+  teapot: {
+    name: "a teapot",
+    on_look: "This is a teapot. It holds tea. ",
+    to_kill: "You pour scalding hot tea onto your hapless victim, and smash the teapot over their head. You use the porcelain to slit their throat. ",
+    kill_fail: "You foolishly assume that the tea has been poisoned and pour a cup for your victim. It has not been poisoned. It is delicious tea. "
+  },
+  grinder: {
+    name: "a coffee grinder",
+    on_look: "The coffee grinder happily grinds coffee. ",
+    to_kill: "You grind your victim's beans. Interpret that how you wish. They die of blood loss. ",
+    kill_fail: "You grind beans for your victim. They are too coarse for their Aeropress. You cackle victoriously. "
+  },
+  remote: {
+    name: "an air conditioning remote",
+    on_look: "A remote control for the air conditioning system. ",
+    on_kill: "You point the remote at your victim and press the power button. They immediately collapse in a heap. It turns out they were an android operating on the same frequency as the air conditioning system. ",
+    kill_fail: "You point the remote at your victim and press the power button. The air conditioning turns on. The hippies curse you. "
+  },
+  ukulele: {
+    name: "a blue ukulele",
+    on_look: "A blue ukulele with black strings. It is out of tune. ",
+    on_kill: "You force the ukulele down your victim's throat. ",
+    kill_fail: "You play some out of tune songs on the ukulele. It is painful, but not fatal. "
+  },
+  hotsauce: {
+    name: "Josh's famous hot sauce",
+    on_look: "A bottle of Josh Forde's famous hot sauce.",
+    on_kill: "You shriek, smash the bottle, and stab the victim repeatedly in their eyes. Spicy blood lines the floor. ",
+    kill_fail: "You make your victim drink some hot sauce. 'It's pretty good,' they say. Foiled! "
+  },
+  boxcutter: {
+    name: "a box cutter",
+    on_look: "A sharp knife for cutting boxes. ",
+    on_kill: "You slice a hole in your victim's skull and shove the box cutter inside their head. ",
+    kill_fail: "You hand the box cutter to your victim. They hand it back. Foiled! "
   }
 };
 

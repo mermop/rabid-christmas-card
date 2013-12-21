@@ -7,6 +7,7 @@ var people_count = 0;
 var rampage = false;
 var kill_count = 0;
 var innocent_victims = [];
+var destroyed_items = [];
 
 function computer_print(response) {
 	$("#history").append('<div class="computer-response">' + response + '</div>');
@@ -117,22 +118,26 @@ function Kill (victim) {
 	var victim = kill_match_array[0].toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(victim) > -1) {
-		    var with_item = kill_match_array[1];
-		    if (inventory.indexOf(with_item.trim()) > -1) {
-		        rampage = true;
-		        score = score - 10;
-				var index = current_location.npcs.indexOf(victim);
-		        current_location.corpses.push(current_location.npcs.splice(index,1)[0]);
-		        return "You use " + with_item + " to brutally slay " + victim + ". " + npcs[victim].lines.death;
-		    } else if (with_item) {
-		        return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
-		    } else {
-		        win_status = "lose";
-	  			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
-		    }
+			if ( kill_match_array.length > 1 ) {
+			    var with_item = kill_match_array[1];
+			    if (inventory.indexOf(with_item.trim()) > -1) {
+			        rampage = true;
+			        score = score - 10;
+					var index = current_location.npcs.indexOf(victim);
+			        current_location.corpses.push(current_location.npcs.splice(index,1)[0]);
+			        destroyed_items.push(inventory.splice(inventory.indexOf(with_item.trim()))[0]);
+			        return objects[with_item].to_kill + npcs[victim].lines.death;
+			    } else if (with_item) {
+			        return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
+			    } else {
+			        win_status = "lose";
+		  			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
+			    }
+			}
 			return ("You look at your fists. You look at " + victim + ". You look back at your fists again. You can't kill " + victim + " without a weapon. I hasten to add that murder is highly illegal and ethically indefensible. Please don't kill " + victim + ". ");
 		}
 	}
+	return ("There is nothing that looks like that here. Also please don't kill people. Don't even kill hive-mind androids. Killing is generally a bad thing to do. ");
 }
 
 function Look (object) {
