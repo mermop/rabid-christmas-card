@@ -1,7 +1,3 @@
-
-//score game based on number of hugs
-//let people steal a bike but take a point off. and don't give the point back if they give the bike back: "That won't ASSUAGE your CONSCIENCE."
-
 var score = 0;
 var turn_count = 0;
 var inventory = ["christmas_card"]
@@ -230,7 +226,6 @@ function check_for_verbs(response) {
 	}
 }
 
-
 function win_game() {
    win_status = "win";
 
@@ -238,7 +233,6 @@ function win_game() {
    $('.container').css('padding', "auto 0 auto 0;");
    $('.container').css('max-width', "1000px");
 }
-
 
 function turn(response) {
 
@@ -261,9 +255,6 @@ function turn(response) {
 		$('#response').remove();
 	}
 }
-
-//score
-
 
 $("#response").keyup(function(event){
   if(event.keyCode == 13){
