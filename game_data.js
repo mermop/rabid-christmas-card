@@ -12,7 +12,7 @@ var locations = {
   },
   stairs: {
     name:"Enspiral stairwell",
-    description:"You are in the stairwell of 22 Allen Street. The lift appears to be permanently slightly ajar, not quite open enough for you to enter. The stairs smell faintly of cleaning supplies. ",
+    description:"You are in the stairwell of 22 Allen Street. The lift appears to be permanently ajar, not quite open enough for you to enter. The stairs smell faintly of cleaning supplies. ",
     directions: {
       north: "entrance",
       south: "outside",
