@@ -214,14 +214,14 @@ function turn_to_regex (phrase) {
 
 function check_for_verbs(response) {
     var response = response.toLowerCase();
-    console.log(response)
+    console.log("response:" + response)
     for(var key in verbs) {
     	console.log("nice")
         for(i = 0; i < verbs[key].aliases.length; i++ ) {
         	console.log(turn_to_regex(verbs[key].aliases[i]));
             if(response.match(turn_to_regex(verbs[key].aliases[i]))) {
                 var cut_point = verbs[key].aliases[i].length + 1;
-                return verbs[key].funct + "(response.substr(" + cut_point + "));";
+                return verbs[key].funct(response.substr(cut_point));;
             }
         }
     }

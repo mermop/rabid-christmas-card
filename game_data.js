@@ -355,7 +355,7 @@ var npcs = {
 var verbs = {
   look: {
     aliases: ["look", "l", "look at"],
-    funct: Look,
+    funct: "Look",
     alone: true,
     transitive: false,
     intransitive: true
