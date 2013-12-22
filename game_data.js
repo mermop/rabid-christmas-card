@@ -168,25 +168,25 @@ var objects = {
   remote: {
     name: "an air conditioning remote",
     on_look: "A remote control for the air conditioning system. ",
-    on_kill: "You point the remote at your victim and press the power button. They immediately collapse in a heap. It turns out they were an android operating on the same frequency as the air conditioning system. ",
+    to_kill: "You point the remote at your victim and press the power button. They immediately collapse in a heap. It turns out they were an android operating on the same frequency as the air conditioning system. ",
     kill_fail: "You point the remote at your victim and press the power button. The air conditioning turns on. The hippies curse you. "
   },
   ukulele: {
     name: "a blue ukulele",
     on_look: "A blue ukulele with black strings. It is out of tune. ",
-    on_kill: "You force the ukulele down your victim's throat. ",
+    to_kill: "You force the ukulele down your victim's throat. ",
     kill_fail: "You play some out of tune songs on the ukulele. It is painful, but not fatal. "
   },
   hotsauce: {
     name: "Josh's famous hot sauce",
     on_look: "A bottle of Josh Forde's famous hot sauce.",
-    on_kill: "You shriek, smash the bottle, and stab the victim repeatedly in their eyes. Spicy blood lines the floor. ",
+    to_kill: "You shriek, smash the bottle, and stab the victim repeatedly in their eyes. Spicy blood lines the floor. ",
     kill_fail: "You make your victim drink some hot sauce. 'It's pretty good,' they say. Foiled! "
   },
   boxcutter: {
     name: "a box cutter",
     on_look: "A sharp knife for cutting boxes. ",
-    on_kill: "You slice a hole in your victim's skull and shove the box cutter inside their head. ",
+    to_kill: "You slice a hole in your victim's skull and shove the box cutter inside their head. ",
     kill_fail: "You hand the box cutter to your victim. They hand it back. Foiled! "
   }
 };
