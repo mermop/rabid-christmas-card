@@ -208,59 +208,26 @@ function Inventory() {
 	return "You are carrying " + inventory_string + ". ";
 }
 
-function check_for_verbs(response) {
-  if (response.match(/^help/i)) {
-    return Help();
-  }
-  if (response.match(/^inventory/i)) {
-    return Inventory();
-  }
-    else if (response.match(/^go/i)) {
-    return Walk(response.substr(3));
-    }
-    else if (response.match(/^walk/i)) {
-    return Walk(response.substr(5));
-    }
-    else if (response.match(/^hug/i)) {
-        return Hug(response.substr(4));
-    }
-    else if (response.match(/^embrace/i)) {
-        return Hug(response.substr(8));
-    }
-  else if (response.match(/^take/i)) {
-    return Take(response.substr(5));
-  }
-  else if (response.match(/^steal/i)) {
-    return Take(response.substr(6));
-  }
-    else if (response.match(/^get/i)) {
-        return Take(response.substr(4));
-    }
-    else if (response.match(/^pick up/i)) {
-        return Take(response.substr(8));
-    }
-    else if (response.match(/^kill/i)) {
-        return Kill(response.substr(5));
-    }
-    else if (response.match(/^murder/i)) {
-        return Kill(response.substr(7));
-    }
-    else if (response.match(/^look at/i)) {
-        return Look(response.substr(8));
-    }
-    else if (response.match(/^look/i)) {
-        return Look(response.substr(5));
-    }
-    else if (response.match(/^greet/i)) {
-        return Greet(response.substr(6));
-    }
-    else if (response.match(/^talk to/i)) {
-        return Greet(response.substr(8));
-    }
-    else {
-        return false;
-    }
+function turn_to_regex (phrase) {
+	return "^" + phrase + ""
 }
+
+function check_for_verbs(response) {
+    var response = response.toLowerCase();
+    console.log(response)
+    for(var key in verbs) {
+    	console.log("nice")
+        for(i = 0; i < verbs[key].aliases.length; i++ ) {
+        	console.log(turn_to_regex(verbs[key].aliases[i]));
+            if(response.match(turn_to_regex(verbs[key].aliases[i]))) {
+                var cut_point = verbs[key].aliases[i].length + 1;
+                return verbs[key].funct + "(response.substr(" + cut_point + "));";
+            }
+        }
+    }
+    return false;
+}
+
 function win_game() {
    win_status = "win";
 
