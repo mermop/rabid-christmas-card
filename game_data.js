@@ -1,34 +1,37 @@
 var locations = {
   outside: {
     name:"Outside Enspiral",
-    description:"You are outside Enspiral Space. ",
+    description:"You stand on Allen Street, outside the building that holds Enspiral Space. A sign reading FOOT LAW sways in the characteristic Wellington wind. ",
     directions: {
       north: "stairs",
       south: "nope",
       west: "nope",
       east: "nope"
-    }
+    },
+    corpses: []
   },
   stairs: {
-    name:"Enspiral stairs",
-    description:"The stairs smell faintly of cleaning supplies. ",
+    name:"Enspiral stairwell",
+    description:"You are in the stairwell of 22 Allen Street. The lift appears to be permanently slightly ajar, not quite open enough for you to enter. The stairs smell faintly of cleaning supplies. ",
     directions: {
       north: "entrance",
       south: "outside",
       west: "nope",
       east: "nope"
-    }
+    },
+    corpses: []
   },
   entrance: {
     name:"Enspiral entrance",
-    description:"The sound of the coffee grinder doesn't quite drown out the excited scheming taking place in the kitchen. ",
+    description:"You are in the entranceway of Enspiral Space. The sound of the coffee grinder doesn't quite drown out the excited scheming taking place in the kitchen. ",
     directions: {
       north: "enspiral_space",
       south: "stairs",
       west: "toilets",
-      east: "nope"
+      east: "kitchen"
     },
-    objects: ["bike"]
+    objects: ["bike"],
+    corpses: []
   },
   toilets: {
     name:"Toilets",
@@ -38,39 +41,85 @@ var locations = {
       south: "nope",
       west: "nope",
       east: "entrance"
-    }
+    },
+    corpses: []
+  },
+  kitchen: {
+    name:"Kitchen",
+    description:"You are in the kitchen of Enspiral Space. The scent of freshly ground coffee mingles with the smell of halloumi someone is cooking on the grill. ",
+    directions: {
+      north: "nope",
+      south: "nope",
+      west: "entrance",
+      east: "nope"
+    },
+    npcs: ["rob", "matt"],
+    objects: ["grinder", "teapot"],
+    corpses: []
   },
   enspiral_space: {
     name:"Inside Enspiral Space",
-    description:"You have entered Enspiral Space. ",
+    description:"You have entered Enspiral Space. The walls are covered with posters promoting various events organised by schemers within the office. ",
     directions: {
       north: "desks",
       south: "entrance",
-      west: "nope",
+      west: "boardroom",
+      east: "backspace"
+    },
+    npcs: ["breccan"],
+    corpses: []
+  },
+  backspace: {
+    name:"The back space",
+    description:"You are in the back space, also known as the server room and, according to the chalk sign on the door, the 'Magical Room of Magicalness'. Servers hum. Ceiling-high shelves are piled up with stuff. ",
+    directions: {
+      north: "nope",
+      south: "nope",
+      west: "enspiral_space",
       east: "nope"
-    }
+    },
+    npcs: ["merrin"],
+    objects: ["boxcutter"],
+    corpses: []
+  },
+  boardroom: {
+    name:"Board Room",
+    description:"You are in the Enspiral Space boardroom. A diagram on the whiteboard attempts to explain some kind of social enterprise; you can't make out exactly what the excited sprawl says, but it includes the phrases 'boat', 'synergy', and, concerningly, 'world domination'. ",
+    directions: {
+      north: "nope",
+      south: "nope",
+      west: "nope",
+      east: "enspiral_space"
+    },
+    npcs: ["eoin"],
+    objects: ["remote"],
+    corpses: []
   },
   desks: {
     name:"First desks",
-    description:"You can see some hippies. To your north is Rabid. ",
+    description:"You stand between two rows of long white desks which reach up to the windows. There is an industrious murmur emanating from the Enspiralites on either side. ",
     directions: {
       north: "rabid",
       south: "enspiral_space",
       west: "nope",
       east: "nope"
     },
-    npcs: ["josh"]
+    npcs: ["josh", "hippies"],
+    objects: ["ukulele", "hotsauce"],
+    corpses: []
   },
   rabid: {
     name:"Rabid land",
-    description:"The den of iniquity. ",
+    description:"You stand in the natural habitat of the Rabidier. The walls are somewhat chaotically decorated with postcards, system architecture diagrams, and star charts. ",
     directions: {
       north: "nope",
       south: "desks",
       west: "nope",
       east: "nope"
     },
-    npcs: ["rob", "megan", "breccan", "merrin", "lachlan", "matt", "eoin"]
+    npcs: ["megan", "lachlan"],
+    objects: ["bottle", "nerfgun"],
+    corpses: []
   }
 };
 
@@ -82,15 +131,85 @@ var objects = {
   },
   bike: {
     name: "a bike",
-    on_look: "The bike is yellow. "
+    on_look: "The bike is yellow. ",
+    to_kill: "You tear apart the metal frame of the bike and stab every part into your victim. ",
+    kill_fail: "You throw the bike at your victim. It misses. You sheepishly pick it back up. "
   },
   cat: {
     name: "a cat",
-    on_look: "The cat is adorable. "
+    on_look: "The cat is adorable. ",
+    to_kill: "You shove the cat into your victim's mouth. The cat eviscerates their throat before both cat and human suffocate. ",
+    kill_fail: "Nobody is intimidated by you brandishing this adorable cat."
+  },
+  nerfgun: {
+    name: "a nerf gun",
+    on_look: "The nerf gun is bright and cheerful. ",
+    to_kill: "You shoot a nerf bullet at your victim. They are puzzled. You seize upon the opportunity to force the brightly coloured plastic weaponry into their brain through their nasal cavity. ",
+    kill_fail: "You shoot a nerf bullet at your victim. They are puzzled. So are you. "
+  },
+  bottle: {
+    name: "an empty bottle of wine",
+    on_look: "Once this was a cheap bottle of red. Now it is a cheap bottle of nothing.",
+    to_kill: "You smash the bottle on your victim's head and stab the jagged edges into their throat. ",
+    kill_fail: "You try to ply your victim with alcohol to lower their defences but the bottle is empty. That is a key part of the description. "
+  },
+  teapot: {
+    name: "a teapot",
+    on_look: "This is a teapot. It holds tea. ",
+    to_kill: "You pour scalding hot tea onto your hapless victim, and smash the teapot over their head. You use the porcelain to slit their throat. ",
+    kill_fail: "You foolishly assume that the tea has been poisoned and pour a cup for your victim. It has not been poisoned. It is delicious tea. "
+  },
+  grinder: {
+    name: "a coffee grinder",
+    on_look: "The coffee grinder happily grinds coffee. ",
+    to_kill: "You grind your victim's beans. Interpret that how you wish. They die of blood loss. ",
+    kill_fail: "You grind beans for your victim. They are too coarse for their Aeropress. You cackle victoriously. "
+  },
+  remote: {
+    name: "an air conditioning remote",
+    on_look: "A remote control for the air conditioning system. ",
+    to_kill: "You point the remote at your victim and press the power button. They immediately collapse in a heap. It turns out they were an android operating on the same frequency as the air conditioning system. ",
+    kill_fail: "You point the remote at your victim and press the power button. The air conditioning turns on. The hippies curse you. "
+  },
+  ukulele: {
+    name: "a blue ukulele",
+    on_look: "A blue ukulele with black strings. It is out of tune. ",
+    to_kill: "You force the ukulele down your victim's throat. ",
+    kill_fail: "You play some out of tune songs on the ukulele. It is painful, but not fatal. "
+  },
+  hotsauce: {
+    name: "Josh's famous hot sauce",
+    on_look: "A bottle of Josh Forde's famous hot sauce.",
+    to_kill: "You shriek, smash the bottle, and stab the victim repeatedly in their eyes. Spicy blood lines the floor. ",
+    kill_fail: "You make your victim drink some hot sauce. 'It's pretty good,' they say. Foiled! "
+  },
+  boxcutter: {
+    name: "a box cutter",
+    on_look: "A sharp knife for cutting boxes. ",
+    to_kill: "You slice a hole in your victim's skull and shove the box cutter inside their head. ",
+    kill_fail: "You hand the box cutter to your victim. They hand it back. Foiled! "
   }
 };
 
 var npcs = {
+  hippies: {
+    name: "The Hippies",
+    hugged: true,
+    lines: {
+      encounter: [
+      "The hippies have hidden the air conditioning remote control. They look smug. "
+      ],
+      greet: [
+      "The hippies, as one, bleat hello."
+      ],
+      hug: [
+      "You attempt to hug the homogenous mass of hippies, but they are too many and too far apart for your arms to encompass."
+      ],
+      death: [
+        "The hippies lie prone on the floor. You try to count them but they are too many. Look, they were weird, and they were android drones controlled by some hippie mastermind, but they were kind. It was unnecessary to kill them. "
+      ],
+    }
+  },
   josh: {
     name: "Josh Forde",
     lines:{
@@ -102,6 +221,9 @@ var npcs = {
       ],
       hug: [
         "You hug Josh. He embraces you like a sibling and pats you on the back. \"I'm just so pleased to see you,\" he says. ",
+      ],
+      death: [
+        "Blood from Josh's corpse slowly pools on the wooden floor. His once-joyful face grins no more. Why did you do it? "
       ],
     }
   },
@@ -117,6 +239,9 @@ var npcs = {
       hug: [
         "You hug Rob. A solid embrace, but now you can't find your wallet. ",
       ],
+      death: [
+        "Rob seems smaller now that he is devoid of the mischievous character that once brought laughter and joy to the world. The injuries you so needlessly inflicted mar his body. You can stop now. You have done enough damage. "
+      ],
     }
   },
   breccan: {
@@ -130,6 +255,9 @@ var npcs = {
       ],
       hug: [
         "As you hug Breccan you note to yourself how nice his suit feels. ",
+      ],
+      death: [
+        "Breccan's long legs are sprawled at unnatural angles, his lovely suit ripped and stained by your barbarism. You have destroyed something beautiful. You can't take that back now. "
       ],
     }
   },
@@ -145,6 +273,9 @@ var npcs = {
       hug: [
         "You hug Merrin. \"Thank you so much for visiting,\" she says. ",
       ],
+      death: [
+        "Merrin's ginger hair is matted red with blood, her face twisted in horror. She created this game and you turned it against her. You are a monster. "
+      ],
     }
   },
   eoin: {
@@ -158,6 +289,9 @@ var npcs = {
       ],
       hug: [
         "You hug Eoin. You feel yourself mentally describing it as a 'bear hug'. His sonorous baritone chuckle echoes across the room. ",
+      ],
+      death: [
+        "Eoin's mangled corpse lies still on the ground. What is wrong with you? What did this sweet, gentle Irishman ever do to you? "
       ],
     }
   },
@@ -173,6 +307,9 @@ var npcs = {
       hug: [
         "You hug Matt. He rubs your back appreciatively. ",
       ],
+      death: [
+        "Music is still playing in Matt's headphones, a little way from his bloody corpse. The tinny sound of guitar wafts up to your ears. You don't deserve to hear this while Matt can't. It's just wrong. You are cruel and undeserving. "
+      ],
     }
   },
   lachlan: {
@@ -186,6 +323,9 @@ var npcs = {
       ],
       hug: [
         "He bounds over to you and gives an energetic embrace. You feel safe in the arms of such an experienced hugger. ",
+      ],
+      death: [
+        "Lachlan is unrecognisable in death, his characteristic energy stolen by a thoughtless, cruel murderer. Stolen by you. "
       ],
     }
   },
@@ -201,10 +341,89 @@ var npcs = {
       hug: [
         "You note the floral scent emanating from Megan's long, beautiful hair as she embraces you. ",
       ],
+      death: [
+        "Megan's face is mercifully obscured by her fine blonde hair. You can't see the expression belying the terror she felt in her last moments. It didn't have to be this way. "
+      ],
     }
   },
 };
 
+// Transitive: requires a subject and an object - [verb] [noun] with [noun]; [verb] [noun] to [noun]
+// Intransitive: requires one object only - [verb] [noun]
+// Alone: can be used alone - [verb]
+
+var verbs = {
+  look: {
+    aliases: ["look", "l", "look at"],
+    funct: "Look",
+    alone: true,
+    transitive: false,
+    intransitive: true
+  },
+  help: {
+    aliases: ["help", "h"],
+    funct: "Help",
+    alone: true,
+    transitive: false,
+    intransitive: false
+  },
+  inventory: {
+    aliases: ["inventory", "i"],
+    funct: "Inventory",
+    alone: true,
+    transitive: false,
+    intransitive: false
+  },
+  go: {
+    aliases: ["go", "walk"],
+    funct: "Go",
+    alone: false,
+    transitive: false,
+    intransitive: true
+  },
+  hug: {
+    aliases: ["hug", "embrace"],
+    funct: "Hug",
+    alone: false,
+    transitive: false,
+    intransitive: true
+  },
+  take: {
+    aliases: ["take", "pick up", "get", "steal"],
+    funct: "Take",
+    alone: false,
+    transitive: false,
+    intransitive: true
+  },
+  kill: {
+    aliases: ["kill", "attack", "murder"],
+    funct: "Kill",
+    alone: false,
+    transitive: true,
+    intransitive: false
+  },
+  greet: {
+    aliases: ["greet", "talk to"],
+    funct: "Greet",
+    alone: false,
+    transitive: false,
+    intransitive: true
+  },
+  ride: {
+    aliases: ["ride"],
+    funct: "Ride",
+    alone: false,
+    transitive: true,
+    intransitive: false
+  },
+  use: {
+    aliases: ["use"],
+    funct: "Use",
+    alone: false,
+    transitive: true,
+    intransitive: true
+  }
+}
 
 var images = {
   success_christmas_tree:  

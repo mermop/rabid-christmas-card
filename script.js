@@ -4,6 +4,10 @@ var inventory = ["christmas_card"]
 var current_location = locations.outside;
 var win_status = "no";
 var people_count = 0;
+var rampage = false;
+var kill_count = 0;
+var innocent_victims = [];
+var destroyed_items = [];
 
 function computer_print(response) {
 	$("#history").append('<div class="computer-response">' + response + '</div>');
@@ -29,7 +33,7 @@ function check_for_win(turn) {
 }
 
 var Help = function (args) {
-  return "Here are some helpful commands: look, go [DIRECTION], greet, inventory";
+  return "Here are some helpful commands: look, go [DIRECTION], greet, inventory, take";
 };
 
 function Walk (dir) {
@@ -53,6 +57,12 @@ function Walk (dir) {
 				what_to_return = what_to_return + npcs[current_location.npcs[i]].name + " is here. ";
 			}
 		}
+		if(current_location.corpses) {
+			for (var i = 0; i < current_location.corpses.length; i++) {
+				console.log("hello");
+				what_to_return = what_to_return + "The corpse of " + npcs[current_location.corpses[i]].name + " is here. ";
+			}
+		}
 		return (what_to_return);
 		}
 	}
@@ -65,6 +75,9 @@ function Hug (recipient) {
 	var recipient = recipient.toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(recipient) > -1) {
+			if ( rampage === true ) {
+				return ("You reach out to embrace " + npcs[recipient].name + ". They cower in fear. You realise you are covered in the blood of their compatriots. " );
+			}
 			if(npcs[recipient].hugged === true){
 				return (npcs[recipient].lines.hug);
 			}
@@ -105,19 +118,26 @@ function Kill (victim) {
 	var victim = kill_match_array[0].toLowerCase();
 	if(current_location.npcs) {
 		if(current_location.npcs.indexOf(victim) > -1) {
-      var with_item = kill_match_array[1];
-      if (inventory.indexOf(with_item.trim()) > -1) {
-        return "You use " + with_item + " to brutally slay " + victim + ".";
-
-      } else if (with_item) {
-        return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
-      } else {
-        win_status = "lose";
-  			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
-      }
+			if ( kill_match_array.length > 1 ) {
+			    var with_item = kill_match_array[1];
+			    if (inventory.indexOf(with_item.trim()) > -1) {
+			        rampage = true;
+			        score = score - 10;
+					var index = current_location.npcs.indexOf(victim);
+			        current_location.corpses.push(current_location.npcs.splice(index,1)[0]);
+			        destroyed_items.push(inventory.splice(inventory.indexOf(with_item.trim()))[0]);
+			        return objects[with_item].to_kill + npcs[victim].lines.death;
+			    } else if (with_item) {
+			        return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
+			    } else {
+			        win_status = "lose";
+		  			return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
+			    }
+			}
+			return ("You look at your fists. You look at " + victim + ". You look back at your fists again. You can't kill " + victim + " without a weapon. I hasten to add that murder is highly illegal and ethically indefensible. Please don't kill " + victim + ". ");
 		}
 	}
-	return ("killing " + victim);
+	return ("There is nothing that looks like that here. Also please don't kill people. Don't even kill hive-mind androids. Killing is generally a bad thing to do. ");
 }
 
 function Look (object) {
@@ -128,6 +148,22 @@ function Look (object) {
 		for (var i = 0; i < dirs.length; i++ ){
 			if (current_location.directions[dirs[i]] != "nope") {
 				what_to_return = what_to_return + "To the " + dirs[i] + " is " + locations[current_location.directions[dirs[i]]].name + ". ";
+			}
+		}
+		if(current_location.objects) {
+			for (var i = 0; i < current_location.objects.length; i++) {
+				what_to_return = what_to_return + "There is a " + current_location.objects[i] + " here. ";
+			}
+		}
+		if(current_location.npcs) {
+			for (var i = 0; i < current_location.npcs.length; i++) {
+				what_to_return = what_to_return + npcs[current_location.npcs[i]].name + " is here. ";
+			}
+		}
+		if(current_location.corpses) {
+			for (var i = 0; i < current_location.corpses.length; i++) {
+				console.log("hello");
+				what_to_return = what_to_return + "The corpse of " + npcs[current_location.corpses[i]].name + " is here. ";
 			}
 		}
 		return (what_to_return);
@@ -179,53 +215,52 @@ function check_for_verbs(response) {
   if (response.match(/^inventory/i)) {
     return Inventory();
   }
-	else if (response.match(/^go/i)) {
+    else if (response.match(/^go/i)) {
     return Walk(response.substr(3));
-	}
-	else if (response.match(/^walk/i)) {
+    }
+    else if (response.match(/^walk/i)) {
     return Walk(response.substr(5));
-	}
-	else if (response.match(/^hug/i)) {
-		return Hug(response.substr(4));
-	}
-	else if (response.match(/^embrace/i)) {
-		return Hug(response.substr(8));
-	}
+    }
+    else if (response.match(/^hug/i)) {
+        return Hug(response.substr(4));
+    }
+    else if (response.match(/^embrace/i)) {
+        return Hug(response.substr(8));
+    }
   else if (response.match(/^take/i)) {
     return Take(response.substr(5));
   }
   else if (response.match(/^steal/i)) {
     return Take(response.substr(6));
   }
-	else if (response.match(/^get/i)) {
-		return Take(response.substr(4));
-	}
-	else if (response.match(/^pick up/i)) {
-		return Take(response.substr(8));
-	}
-	else if (response.match(/^kill/i)) {
-		return Kill(response.substr(5));
-	}
-	else if (response.match(/^murder/i)) {
-		return Kill(response.substr(7));
-	}
-	else if (response.match(/^look at/i)) {
-		return Look(response.substr(8));
-	}
-	else if (response.match(/^look/i)) {
-		return Look(response.substr(5));
-	}
-	else if (response.match(/^greet/i)) {
-		return Greet(response.substr(6));
-	}
-	else if (response.match(/^talk to/i)) {
-		return Greet(response.substr(8));
-	}
-	else {
-		return false;
-	}
+    else if (response.match(/^get/i)) {
+        return Take(response.substr(4));
+    }
+    else if (response.match(/^pick up/i)) {
+        return Take(response.substr(8));
+    }
+    else if (response.match(/^kill/i)) {
+        return Kill(response.substr(5));
+    }
+    else if (response.match(/^murder/i)) {
+        return Kill(response.substr(7));
+    }
+    else if (response.match(/^look at/i)) {
+        return Look(response.substr(8));
+    }
+    else if (response.match(/^look/i)) {
+        return Look(response.substr(5));
+    }
+    else if (response.match(/^greet/i)) {
+        return Greet(response.substr(6));
+    }
+    else if (response.match(/^talk to/i)) {
+        return Greet(response.substr(8));
+    }
+    else {
+        return false;
+    }
 }
-
 function win_game() {
    win_status = "win";
 
@@ -241,15 +276,23 @@ function turn(response) {
     turn_count ++;
     var verb_response = check_for_verbs(response);
     if(verb_response === false){
-      computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.");
+    	if (rampage === false) {
+	    	computer_print("I don't know what '" + response + "' means. I hope it isn't anything rude.");
+    	}
+    	else {
+    		computer_print("I'm glad I don't know what '" + response + "' means. I don't want to know. I don't need the insight into your twisted mind.")
+    	}
     }
     else {
       computer_print(verb_response);
     }
     score_update(score);
     turn_update(turn_count);
-
     check_for_win(turn);
+
+    if(rampage === true){
+    	$('body').css('color', '#FF0000')
+    }
 
 	if(win_status === "lose") {
 		$('#response').remove();
