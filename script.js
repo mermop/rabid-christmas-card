@@ -21,6 +21,24 @@ function turn_update(turn) {
 	$("#turn").text("Turn: " + turn);
 }
 
+function game_end(reason) {
+	if (reason === "hugged") {
+
+	}
+	if (reason === "murdered") {
+
+	}
+	if (reason === "bike") {
+
+	}
+	if (reason === "dead") {
+
+	}
+	else {
+		
+	}
+}
+
 function check_for_win(turn) {
    for(var key in npcs) {
       if ( ! npcs[key].hugged === true) {

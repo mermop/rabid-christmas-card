@@ -8,6 +8,7 @@ var locations = {
       west: "nope",
       east: "nope"
     },
+    objects: ["cat"],
     corpses: []
   },
   stairs: {
@@ -133,7 +134,8 @@ var objects = {
     name: "a bike",
     on_look: "The bike is yellow. ",
     to_kill: "You tear apart the metal frame of the bike and stab every part into your victim. ",
-    kill_fail: "You throw the bike at your victim. It misses. You sheepishly pick it back up. "
+    kill_fail: "You throw the bike at your victim. It misses. You sheepishly pick it back up. ",
+    on_use: "You ride joyfully away into the sunset on the bike. The hippies run after you, chanting your name, but you easily outpace them. "
   },
   cat: {
     name: "a cat",
@@ -360,26 +362,33 @@ var verbs = {
       if(object === "") {
         var what_to_return = "You are at " + current_location.name + ". " + current_location.description;
         var dirs = ["north", "south", "east", "west"];
+        what_to_return = what_to_return + "<p>";
         for (var i = 0; i < dirs.length; i++ ){
           if (current_location.directions[dirs[i]] != "nope") {
             what_to_return = what_to_return + "To the " + dirs[i] + " is " + locations[current_location.directions[dirs[i]]].name + ". ";
           }
         }
+        what_to_return = what_to_return + "</p>";
         if(current_location.objects) {
+          what_to_return = what_to_return + "<p>";
           for (var i = 0; i < current_location.objects.length; i++) {
-            what_to_return = what_to_return + "There is a " + current_location.objects[i] + " here. ";
+            what_to_return = what_to_return + "There is a " + objects[current_location.objects[i]].name + " here. ";
           }
+          what_to_return = what_to_return + "</p>";
         }
         if(current_location.npcs) {
+          what_to_return = what_to_return + "<p>";
           for (var i = 0; i < current_location.npcs.length; i++) {
             what_to_return = what_to_return + npcs[current_location.npcs[i]].name + " is here. ";
           }
+          what_to_return = what_to_return + "</p>";
         }
         if(current_location.corpses) {
+          what_to_return = what_to_return + "<p>";
           for (var i = 0; i < current_location.corpses.length; i++) {
-            console.log("hello");
             what_to_return = what_to_return + "The corpse of " + npcs[current_location.corpses[i]].name + " is here. ";
           }
+          what_to_return = what_to_return + "</p>";
         }
         return (what_to_return);
       }
@@ -466,24 +475,8 @@ var verbs = {
         }
         else {
         current_location = locations[destination_location];
-        var what_to_return = "walking " + dir + " to " + current_location.name + ". " + current_location.description;
-        if(current_location.objects) {
-          for (var i = 0; i < current_location.objects.length; i++) {
-            what_to_return = what_to_return + "There is a " + current_location.objects[i] + " here. ";
-          }
-        }
-        if(current_location.npcs) {
-          for (var i = 0; i < current_location.npcs.length; i++) {
-            what_to_return = what_to_return + npcs[current_location.npcs[i]].name + " is here. ";
-          }
-        }
-        if(current_location.corpses) {
-          for (var i = 0; i < current_location.corpses.length; i++) {
-            console.log("hello");
-            what_to_return = what_to_return + "The corpse of " + npcs[current_location.corpses[i]].name + " is here. ";
-          }
-        }
-        return (what_to_return);
+        var what_to_return = "walking " + dir + " to " + current_location.name + ". ";
+        return what_to_return + verbs["look"].funct("");
         }
       }
       else {
@@ -502,7 +495,7 @@ var verbs = {
         var index = current_location.objects.indexOf(object);
         if(index > -1) {
           inventory.push(current_location.objects.splice(index, 1)[0]);
-          return ("You have picked up " + object + ". ")
+          return ("You have picked up " + objects[object].name + ". ")
         }
         else {
           return ("That is not here. You grab feebly at empty air.");
@@ -536,10 +529,10 @@ var verbs = {
                   return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
               } else {
                   win_status = "lose";
-                return ("You have a brief struggle with " + victim + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
+                return ("You have a brief struggle with " + npcs[victim].name + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
               }
           }
-          return ("You look at your fists. You look at " + victim + ". You look back at your fists again. You can't kill " + victim + " without a weapon. I hasten to add that murder is highly illegal and ethically indefensible. Please don't kill " + victim + ". ");
+          return ("You look at your fists. You look at " + npcs[victim].name + ". You look back at your fists again. You can't kill " + npcs[victim].name + " without a weapon. I hasten to add that murder is highly illegal and ethically indefensible. Please don't kill " + npcs[victim].name + ". ");
         }
       }
       return ("There is nothing that looks like that here. Also please don't kill people. Don't even kill hive-mind androids. Killing is generally a bad thing to do. ");
@@ -554,6 +547,9 @@ var verbs = {
       var person = person.toLowerCase();
       if(current_location.npcs) {
         if(current_location.npcs.indexOf(person) > -1) {
+          if (rampage === true) {
+            return (npcs[person].name + " cowers. ")
+          }
           return (npcs[person].lines.greet);
         }
         else {
@@ -570,7 +566,14 @@ var verbs = {
   },
   ride: {
     aliases: ["ride"],
-    funct: "Ride",
+    funct: function Ride (object) {
+      if (current_location === "outside") {
+        if (object === "bike") {
+          game_end(bike);
+          return (objects[bike].on_use);
+        }
+      }
+    },
     alone: false,
     transitive: true,
     intransitive: false
