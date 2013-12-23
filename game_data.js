@@ -8,11 +8,12 @@ var locations = {
       west: "nope",
       east: "nope"
     },
+    objects: ["cat"],
     corpses: []
   },
   stairs: {
     name:"Enspiral stairwell",
-    description:"You are in the stairwell of 22 Allen Street. The lift appears to be permanently slightly ajar, not quite open enough for you to enter. The stairs smell faintly of cleaning supplies. ",
+    description:"You are in the stairwell of 22 Allen Street. The lift appears to be permanently ajar, not quite open enough for you to enter. The stairs smell faintly of cleaning supplies. ",
     directions: {
       north: "entrance",
       south: "outside",
@@ -133,7 +134,8 @@ var objects = {
     name: "a bike",
     on_look: "The bike is yellow. ",
     to_kill: "You tear apart the metal frame of the bike and stab every part into your victim. ",
-    kill_fail: "You throw the bike at your victim. It misses. You sheepishly pick it back up. "
+    kill_fail: "You throw the bike at your victim. It misses. You sheepishly pick it back up. ",
+    on_use: "You ride joyfully away into the sunset on the bike. The hippies run after you, chanting your name, but you easily outpace them. "
   },
   cat: {
     name: "a cat",
@@ -355,63 +357,226 @@ var npcs = {
 var verbs = {
   look: {
     aliases: ["look", "l", "look at"],
-    funct: "Look",
+    funct: function Look (object) {
+      var object = object.toLowerCase();
+      if(object === "") {
+        var what_to_return = "You are at " + current_location.name + ". " + current_location.description;
+        var dirs = ["north", "south", "east", "west"];
+        what_to_return = what_to_return + "<p>";
+        for (var i = 0; i < dirs.length; i++ ){
+          if (current_location.directions[dirs[i]] != "nope") {
+            what_to_return = what_to_return + "To the " + dirs[i] + " is " + locations[current_location.directions[dirs[i]]].name + ". ";
+          }
+        }
+        what_to_return = what_to_return + "</p>";
+        if(current_location.objects) {
+          what_to_return = what_to_return + "<p>";
+          for (var i = 0; i < current_location.objects.length; i++) {
+            what_to_return = what_to_return + "There is a " + objects[current_location.objects[i]].name + " here. ";
+          }
+          what_to_return = what_to_return + "</p>";
+        }
+        if(current_location.npcs) {
+          what_to_return = what_to_return + "<p>";
+          for (var i = 0; i < current_location.npcs.length; i++) {
+            what_to_return = what_to_return + npcs[current_location.npcs[i]].name + " is here. ";
+          }
+          what_to_return = what_to_return + "</p>";
+        }
+        if(current_location.corpses) {
+          what_to_return = what_to_return + "<p>";
+          for (var i = 0; i < current_location.corpses.length; i++) {
+            what_to_return = what_to_return + "The corpse of " + npcs[current_location.corpses[i]].name + " is here. ";
+          }
+          what_to_return = what_to_return + "</p>";
+        }
+        return (what_to_return);
+      }
+      else {
+        if(current_location.npcs) {
+          if(current_location.npcs.indexOf(object) > -1) {
+            return (npcs[object].lines.encounter);
+          }
+        }
+        return ("looking at " + object);
+      }
+    },
     alone: true,
+    transitive: false,
+    intransitive: true
+  },
+  hug: {
+    aliases: ["hug", "embrace"],
+    funct: 
+    function Hug (recipient) {
+      var recipient = recipient.toLowerCase();
+      if(current_location.npcs) {
+        if(current_location.npcs.indexOf(recipient) > -1) {
+          if ( rampage === true ) {
+            return ("You reach out to embrace " + npcs[recipient].name + ". They cower in fear. You realise you are covered in the blood of their compatriots. " );
+          }
+          if(npcs[recipient].hugged === true){
+            return (npcs[recipient].lines.hug);
+          }
+          else {
+            npcs[recipient].hugged = true;
+            score++;
+            return (npcs[recipient].lines.hug + "You feel accomplished, like you are closer to winning this silly game. ");
+          }
+        }
+        else {
+          return ("You can't hug " + recipient + ". ");
+        }
+      }
+      else {
+        return ("There is no one to hug. ");
+      }
+    },
+    alone: false,
     transitive: false,
     intransitive: true
   },
   help: {
     aliases: ["help", "h"],
-    funct: "Help",
+    funct: 
+    function Help (args) {
+      return "Here are some helpful commands: look, go [DIRECTION], greet, inventory, take";
+    },
     alone: true,
     transitive: false,
     intransitive: false
   },
   inventory: {
     aliases: ["inventory", "i"],
-    funct: "Inventory",
+    funct: function Inventory() {
+      var inventory_string = "";
+        for(i = 0; i < inventory.length; i ++) {
+          inventory_string = inventory_string + Object_Namer(inventory[i]);
+          if(i !== inventory.length - 1){
+            inventory_string = inventory_string + " and ";
+          }
+        }
+      return "You are carrying " + inventory_string + ". ";
+    },
     alone: true,
     transitive: false,
     intransitive: false
   },
   go: {
     aliases: ["go", "walk"],
-    funct: "Go",
-    alone: false,
-    transitive: false,
-    intransitive: true
-  },
-  hug: {
-    aliases: ["hug", "embrace"],
-    funct: "Hug",
+    funct: 
+    function Walk (dir) {
+      var dir = dir.toLowerCase();
+      var dirs = ["north", "south", "east", "west"];
+      if(dirs.indexOf(dir) > -1) {
+        var destination_location = current_location.directions[dir];
+        if(destination_location == "nope") {
+          return ("can't go there");
+        }
+        else {
+        current_location = locations[destination_location];
+        var what_to_return = "walking " + dir + " to " + current_location.name + ". ";
+        return what_to_return + verbs["look"].funct("");
+        }
+      }
+      else {
+        return ("invalid direction");
+      }
+    },
     alone: false,
     transitive: false,
     intransitive: true
   },
   take: {
     aliases: ["take", "pick up", "get", "steal"],
-    funct: "Take",
+    funct: function Take (object) {
+      var object = object.toLowerCase();
+      if(current_location.objects) {
+        var index = current_location.objects.indexOf(object);
+        if(index > -1) {
+          inventory.push(current_location.objects.splice(index, 1)[0]);
+          return ("You have picked up " + objects[object].name + ". ")
+        }
+        else {
+          return ("That is not here. You grab feebly at empty air.");
+        }
+      }
+      else {
+        return ("There is nothing here to take. ");
+      }
+    },
     alone: false,
     transitive: false,
     intransitive: true
   },
   kill: {
     aliases: ["kill", "attack", "murder"],
-    funct: "Kill",
+    funct: function Kill (victim) {
+      var kill_match_array = victim.split(" with ")
+      var victim = kill_match_array[0].toLowerCase();
+      if(current_location.npcs) {
+        if(current_location.npcs.indexOf(victim) > -1) {
+          if ( kill_match_array.length > 1 ) {
+              var with_item = kill_match_array[1];
+              if (inventory.indexOf(with_item.trim()) > -1) {
+                  rampage = true;
+                  score = score - 10;
+                  npcs[victim].dead = true;
+              var index = current_location.npcs.indexOf(victim);
+                  current_location.corpses.push(current_location.npcs.splice(index,1)[0]);
+                  destroyed_items.push(inventory.splice(inventory.indexOf(with_item.trim()))[0]);
+                  return objects[with_item].to_kill + npcs[victim].lines.death;
+              } else if (with_item) {
+                  return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
+              } else {
+                  win_status = "lose";
+                return ("You have a brief struggle with " + npcs[victim].name + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
+              }
+          }
+          return ("You look at your fists. You look at " + npcs[victim].name + ". You look back at your fists again. You can't kill " + npcs[victim].name + " without a weapon. I hasten to add that murder is highly illegal and ethically indefensible. Please don't kill " + npcs[victim].name + ". ");
+        }
+      }
+      return ("There is nothing that looks like that here. Also please don't kill people. Don't even kill hive-mind androids. Killing is generally a bad thing to do. ");
+    },
     alone: false,
     transitive: true,
     intransitive: false
   },
   greet: {
     aliases: ["greet", "talk to"],
-    funct: "Greet",
+    funct: function Greet (person) {
+      var person = person.toLowerCase();
+      if(current_location.npcs) {
+        if(current_location.npcs.indexOf(person) > -1) {
+          if (rampage === true) {
+            return (npcs[person].name + " cowers. ")
+          }
+          return (npcs[person].lines.greet);
+        }
+        else {
+          return (recipient + "can't hear you. You are shouting into the void and you look like an idiot.");
+        }
+      }
+      else {
+        return ("There is no one to greet here.");
+      }
+    },
     alone: false,
     transitive: false,
     intransitive: true
   },
   ride: {
     aliases: ["ride"],
-    funct: "Ride",
+    funct: function Ride (object) {
+      if (current_location === "outside") {
+        if (object === "bike") {
+          return (objects[bike].on_use);
+        }
+        else {
+          return "You can't ride that. You try to ride it and it looks stupid. You are embarrassed, and rightly so. " 
+        }
+      }
+    },
     alone: false,
     transitive: true,
     intransitive: false
@@ -470,4 +635,23 @@ var images = {
       "</pre>"+
       "<!-- Image courtesy of http://www.geocities.com/spunk1111/xmas.htm -->"
 };
+
+var endings = {
+  bike: {
+    final_message: "The Christmas card from Rabid flutters out of your pocket as you ride down Wakefield Street. ",
+    tweet: "I escaped from the @Rabidtech Christmas card! "
+  },
+  murdered: {
+    final_message: "Everyone is dead. You have ruined Christmas. The Armed Offenders Squad surround the building, and someone with a megaphone outside is shouting your name. The blood on your hands has obscured the contents of the Christmas card from Rabid. Your rampage will go down in infamy. ",
+    tweet: "I am a terrible person. Never let me in to @Rabidtech's office. "
+  },
+  killed: {
+    final_message: "You always wondered what happens after you die. Now you know. Merry Christmas. ",
+    tweet: "Mourn for me. I was vanquished by the @Rabidtech Christmas card. "
+  },
+  hugged: {
+    final_message: "images[success_christmas_tree]",
+    tweet: "I won the @Rabidtech Christmas card with the POWER OF LOVE! "
+  }
+}
 
