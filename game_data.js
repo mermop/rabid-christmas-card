@@ -521,6 +521,7 @@ var verbs = {
               if (inventory.indexOf(with_item.trim()) > -1) {
                   rampage = true;
                   score = score - 10;
+                  npcs[victim].dead = true;
               var index = current_location.npcs.indexOf(victim);
                   current_location.corpses.push(current_location.npcs.splice(index,1)[0]);
                   destroyed_items.push(inventory.splice(inventory.indexOf(with_item.trim()))[0]);
@@ -569,7 +570,6 @@ var verbs = {
     funct: function Ride (object) {
       if (current_location === "outside") {
         if (object === "bike") {
-          game_end(bike);
           return (objects[bike].on_use);
         }
         else {
@@ -638,19 +638,19 @@ var images = {
 
 var endings = {
   bike: {
-    final_message: "The Christmas card from Rabid flutters out of your pocket as you ride down Wakefield Street. "
+    final_message: "The Christmas card from Rabid flutters out of your pocket as you ride down Wakefield Street. ",
     tweet: "I escaped from the @Rabidtech Christmas card! "
   },
   murdered: {
-    final_message: "Everyone is dead. You have ruined Christmas. The Armed Offenders Squad surround the building, and someone with a megaphone outside is shouting your name. The blood on your hands has obscured the contents of the Christmas card from Rabid. Your rampage will go down in infamy. "
+    final_message: "Everyone is dead. You have ruined Christmas. The Armed Offenders Squad surround the building, and someone with a megaphone outside is shouting your name. The blood on your hands has obscured the contents of the Christmas card from Rabid. Your rampage will go down in infamy. ",
     tweet: "I am a terrible person. Never let me in to @Rabidtech's office. "
   },
   killed: {
-    final_message: "You always wondered what happens after you die. Now you know. Merry Christmas. "
+    final_message: "You always wondered what happens after you die. Now you know. Merry Christmas. ",
     tweet: "Mourn for me. I was vanquished by the @Rabidtech Christmas card. "
   },
   hugged: {
-    final_message: images[success_christmas_tree],
+    final_message: "images[success_christmas_tree]",
     tweet: "I won the @Rabidtech Christmas card with the POWER OF LOVE! "
   }
 }

@@ -22,40 +22,42 @@ function turn_update(turn) {
 }
 
 function game_end(reason) {
-	if (reason === "hugged") {
-
-	}
-	if (reason === "murdered") {
-
-	}
-	if (reason === "bike") {
-
-	}
-	if (reason === "dead") {
-
-	}
-	else {
-		
-	}
+  computer_print(endings[reason].final_message);
+  computer_print("<a href='https://twitter.com/share' data-text='" + endings[reason].tweet + "'> Tweet </a>")
+  $('#response').remove();
 }
 
 function check_for_win(turn) {
-   for(var key in npcs) {
-      if ( ! npcs[key].hugged === true) {
-         return false
+  var hug_count = 0;
+  var people_count = 0;
+  for(var key in npcs) {
+      if ( npcs[key].hugged === true ) {
+        hug_count ++;
       }
-   }
-
-   win_game();
-   return true
+      people_count ++;
+  }
+  if (hug_count === people_count) {
+    game_end("hugged");
+  }
+  var kill_count = 0;
+  people_count = 0;
+  for(var key in npcs) {
+      if ( npcs[key].dead === true ) {
+        kill_count ++;
+      }
+      people_count ++;
+  }
+  if (kill_count === people_count) {
+    game_end("murdered");
+  }
 }
 
 function Object_Namer(object) {
-	return objects[object].name
+  return objects[object].name
 }
 
 function turn_to_regex (phrase) {
-	return "^" + phrase + ""
+  return "^" + phrase + ""
 }
 
 function check_for_verbs(response) {
@@ -103,7 +105,7 @@ function turn(response) {
     if(rampage === true){
     	$('body').css('color', '#FF0000')
     }
-}
+};
 
 $("#response").keyup(function(event){
   if(event.keyCode == 13){
