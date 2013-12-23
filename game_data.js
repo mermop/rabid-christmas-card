@@ -572,6 +572,9 @@ var verbs = {
           game_end(bike);
           return (objects[bike].on_use);
         }
+        else {
+          return "You can't ride that. You try to ride it and it looks stupid. You are embarrassed, and rightly so. " 
+        }
       }
     },
     alone: false,
@@ -632,4 +635,23 @@ var images = {
       "</pre>"+
       "<!-- Image courtesy of http://www.geocities.com/spunk1111/xmas.htm -->"
 };
+
+var endings = {
+  bike: {
+    final_message: "The Christmas card from Rabid flutters out of your pocket as you ride down Wakefield Street. "
+    tweet: "I escaped from the @Rabidtech Christmas card! "
+  },
+  murdered: {
+    final_message: "Everyone is dead. You have ruined Christmas. The Armed Offenders Squad surround the building, and someone with a megaphone outside is shouting your name. The blood on your hands has obscured the contents of the Christmas card from Rabid. Your rampage will go down in infamy. "
+    tweet: "I am a terrible person. Never let me in to @Rabidtech's office. "
+  },
+  killed: {
+    final_message: "You always wondered what happens after you die. Now you know. Merry Christmas. "
+    tweet: "Mourn for me. I was vanquished by the @Rabidtech Christmas card. "
+  },
+  hugged: {
+    final_message: images[success_christmas_tree],
+    tweet: "I won the @Rabidtech Christmas card with the POWER OF LOVE! "
+  }
+}
 

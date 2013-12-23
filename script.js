@@ -103,10 +103,6 @@ function turn(response) {
     if(rampage === true){
     	$('body').css('color', '#FF0000')
     }
-
-	if(win_status === "lose") {
-		$('#response').remove();
-	}
 }
 
 $("#response").keyup(function(event){
