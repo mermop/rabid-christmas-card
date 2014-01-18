@@ -23,8 +23,9 @@ function turn_update(turn) {
 
 function game_end(reason) {
   computer_print(endings[reason].final_message);
-  computer_print("<a href='https://twitter.com/share' data-text='" + endings[reason].tweet + "'> Tweet </a>")
+  computer_print("<a href='https://twitter.com/share' data-text='" + endings[reason].tweet + "' class='twitter-share-button'> Tweet </a>")
   $('#response').remove();
+  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 }
 
 function check_for_win(turn) {
