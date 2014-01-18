@@ -468,6 +468,9 @@ var verbs = {
     function Walk (dir) {
       var dir = dir.toLowerCase();
       var dirs = ["north", "south", "east", "west"];
+      if (dir == "n") dir = "north"; else if (dir == "s") dir = "south"; 
+      else if (dir == "e") dir = "east"; else if (dir == "w") dir = "west";
+      
       if(dirs.indexOf(dir) > -1) {
         var destination_location = current_location.directions[dir];
         if(destination_location == "nope") {
@@ -478,7 +481,10 @@ var verbs = {
         var what_to_return = "walking " + dir + " to " + current_location.name + ". ";
         return what_to_return + verbs["look"].funct("");
         }
-      }
+      } 
+      else if (dir == "") {
+        return ("go? go where?")
+      } 
       else {
         return ("invalid direction");
       }
@@ -487,6 +493,10 @@ var verbs = {
     transitive: false,
     intransitive: true
   },
+  go_north: {aliases: ["n"], funct: function go_north () {return check_for_verbs("go north");}},
+  go_south: {aliases: ["s"], funct: function go_south () {return check_for_verbs("go south");}},
+  go_east:  {aliases: ["e"], funct: function go_east  () {return check_for_verbs("go east" );}},
+  go_west:  {aliases: ["w"], funct: function go_west  () {return check_for_verbs("go west" );}},
   take: {
     aliases: ["take", "pick up", "get", "steal"],
     funct: function Take (object) {

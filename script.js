@@ -62,7 +62,7 @@ function turn_to_regex (phrase) {
 }
 
 function check_for_verbs(response) {
-    var response = response.toLowerCase();
+    var response = response.toLowerCase().trim();
     for(var key in verbs) {
         for(i = 0; i < verbs[key].aliases.length; i++ ) {
             if(response.match(turn_to_regex(verbs[key].aliases[i]))) {
