@@ -498,7 +498,7 @@ var verbs = {
   go_east:  {aliases: ["e"], funct: function go_east  () {return check_for_verbs("go east" );}},
   go_west:  {aliases: ["w"], funct: function go_west  () {return check_for_verbs("go west" );}},
   take: {
-    aliases: ["take", "pick up", "get", "steal"],
+    aliases: ["take", "pick up", "get", "steal", "grab"],
     funct: function Take (object) {
       var object = object.toLowerCase();
       if(current_location.objects) {
@@ -532,9 +532,10 @@ var verbs = {
                   rampage = true;
                   score = score - 10;
                   npcs[victim].dead = true;
-              var index = current_location.npcs.indexOf(victim);
+                  var index = current_location.npcs.indexOf(victim);
                   current_location.corpses.push(current_location.npcs.splice(index,1)[0]);
-                  destroyed_items.push(inventory.splice(inventory.indexOf(with_item.trim()))[0]);
+                  var weapon_index = inventory.indexOf(with_item.trim());
+                  destroyed_items.push(inventory.splice(weapon_index, 1)[0]);
                   return objects[with_item].to_kill + npcs[victim].lines.death;
               } else if (with_item) {
                   return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
