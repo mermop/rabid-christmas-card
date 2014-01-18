@@ -498,7 +498,7 @@ var verbs = {
   go_east:  {aliases: ["e"], funct: function go_east  () {return check_for_verbs("go east" );}},
   go_west:  {aliases: ["w"], funct: function go_west  () {return check_for_verbs("go west" );}},
   take: {
-    aliases: ["take", "pick up", "get", "steal", "grab"],
+    aliases: ["take", "pick up", "get", "steal", "grab", "yoink", "snatch"],
     funct: function Take (object) {
       var object = object.toLowerCase();
       if(current_location.objects) {
@@ -520,7 +520,7 @@ var verbs = {
     intransitive: true
   },
   kill: {
-    aliases: ["kill", "attack", "murder"],
+    aliases: ["kill", "attack", "murder", "shiv"],
     funct: function Kill (victim) {
       var kill_match_array = victim.split(" with ")
       var victim = kill_match_array[0].toLowerCase();
