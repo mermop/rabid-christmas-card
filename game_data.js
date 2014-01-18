@@ -132,6 +132,7 @@ var objects = {
   },
   bike: {
     name: "a bike",
+    can_kill: ['human'],
     on_look: "The bike is yellow. ",
     to_kill: "You tear apart the metal frame of the bike and stab every part into your victim. ",
     kill_fail: "You throw the bike at your victim. It misses. You sheepishly pick it back up. ",
@@ -139,54 +140,63 @@ var objects = {
   },
   cat: {
     name: "a cat",
+    can_kill: ['human'],
     on_look: "The cat is adorable. ",
     to_kill: "You shove the cat into your victim's mouth. The cat eviscerates their throat before both cat and human suffocate. ",
     kill_fail: "Nobody is intimidated by you brandishing this adorable cat."
   },
   nerfgun: {
     name: "a nerf gun",
+    can_kill: ['human'],
     on_look: "The nerf gun is bright and cheerful. ",
     to_kill: "You shoot a nerf bullet at your victim. They are puzzled. You seize upon the opportunity to force the brightly coloured plastic weaponry into their brain through their nasal cavity. ",
     kill_fail: "You shoot a nerf bullet at your victim. They are puzzled. So are you. "
   },
   bottle: {
     name: "an empty bottle of wine",
+    can_kill: ['human'],
     on_look: "Once this was a cheap bottle of red. Now it is a cheap bottle of nothing.",
     to_kill: "You smash the bottle on your victim's head and stab the jagged edges into their throat. ",
     kill_fail: "You try to ply your victim with alcohol to lower their defences but the bottle is empty. That is a key part of the description. "
   },
   teapot: {
     name: "a teapot",
+    can_kill: ['human'],
     on_look: "This is a teapot. It holds tea. ",
     to_kill: "You pour scalding hot tea onto your hapless victim, and smash the teapot over their head. You use the porcelain to slit their throat. ",
     kill_fail: "You foolishly assume that the tea has been poisoned and pour a cup for your victim. It has not been poisoned. It is delicious tea. "
   },
   grinder: {
     name: "a coffee grinder",
+    can_kill: ['human'],
     on_look: "The coffee grinder happily grinds coffee. ",
     to_kill: "You grind your victim's beans. Interpret that how you wish. They die of blood loss. ",
     kill_fail: "You grind beans for your victim. They are too coarse for their Aeropress. You cackle victoriously. "
   },
   remote: {
     name: "an air conditioning remote",
+    can_kill: ['android'],
     on_look: "A remote control for the air conditioning system. ",
     to_kill: "You point the remote at your victim and press the power button. They immediately collapse in a heap. It turns out they were an android operating on the same frequency as the air conditioning system. ",
     kill_fail: "You point the remote at your victim and press the power button. The air conditioning turns on. The hippies curse you. "
   },
   ukulele: {
     name: "a blue ukulele",
+    can_kill: ['human'],
     on_look: "A blue ukulele with black strings. It is out of tune. ",
     to_kill: "You force the ukulele down your victim's throat. ",
     kill_fail: "You play some out of tune songs on the ukulele. It is painful, but not fatal. "
   },
   hotsauce: {
     name: "Josh's famous hot sauce",
+    can_kill: ['human'],
     on_look: "A bottle of Josh Forde's famous hot sauce.",
     to_kill: "You shriek, smash the bottle, and stab the victim repeatedly in their eyes. Spicy blood lines the floor. ",
     kill_fail: "You make your victim drink some hot sauce. 'It's pretty good,' they say. Foiled! "
   },
   boxcutter: {
     name: "a box cutter",
+    can_kill: ['human'],
     on_look: "A sharp knife for cutting boxes. ",
     to_kill: "You slice a hole in your victim's skull and shove the box cutter inside their head. ",
     kill_fail: "You hand the box cutter to your victim. They hand it back. Foiled! "
@@ -197,6 +207,7 @@ var npcs = {
   hippies: {
     name: "The Hippies",
     hugged: true,
+    type: 'android',
     lines: {
       encounter: [
       "The hippies have hidden the air conditioning remote control. They look smug. "
@@ -407,8 +418,7 @@ var verbs = {
   },
   hug: {
     aliases: ["hug", "embrace"],
-    funct: 
-    function Hug (recipient) {
+    funct: function Hug (recipient) {
       var recipient = recipient.toLowerCase();
       if(current_location.npcs) {
         if(current_location.npcs.indexOf(recipient) > -1) {
@@ -438,8 +448,7 @@ var verbs = {
   },
   help: {
     aliases: ["help", "h"],
-    funct: 
-    function Help (args) {
+    funct: function Help (args) {
       return "Here are some helpful commands: look, go [DIRECTION], greet, inventory, take";
     },
     alone: true,
@@ -464,13 +473,12 @@ var verbs = {
   },
   go: {
     aliases: ["go", "walk"],
-    funct: 
-    function Walk (dir) {
+    funct: function Walk (dir) {
       var dir = dir.toLowerCase();
       var dirs = ["north", "south", "east", "west"];
-      if (dir == "n") dir = "north"; else if (dir == "s") dir = "south"; 
+      if (dir == "n") dir = "north"; else if (dir == "s") dir = "south";
       else if (dir == "e") dir = "east"; else if (dir == "w") dir = "west";
-      
+
       if(dirs.indexOf(dir) > -1) {
         var destination_location = current_location.directions[dir];
         if(destination_location == "nope") {
@@ -481,10 +489,10 @@ var verbs = {
         var what_to_return = "walking " + dir + " to " + current_location.name + ". ";
         return what_to_return + verbs["look"].funct("");
         }
-      } 
-      else if (dir == "") {
-        return ("go? go where?")
-      } 
+      }
+      else if (dir === "") {
+        return ("go? go where?");
+      }
       else {
         return ("invalid direction");
       }
@@ -505,7 +513,7 @@ var verbs = {
         var index = current_location.objects.indexOf(object);
         if(index > -1) {
           inventory.push(current_location.objects.splice(index, 1)[0]);
-          return ("You have picked up " + objects[object].name + ". ")
+          return ("You have picked up " + objects[object].name + ". ");
         }
         else {
           return ("That is not here. You grab feebly at empty air.");
@@ -522,26 +530,37 @@ var verbs = {
   kill: {
     aliases: ["kill", "attack", "murder", "shiv"],
     funct: function Kill (victim) {
-      var kill_match_array = victim.split(" with ")
+      var canVictimBeKilledWithWeapon = function (victim, weapon) {
+        var victim_type = (npcs[victim].type || 'human');
+        var weapon = objects[weapon];
+        return (weapon.can_kill.indexOf(victim_type) > -1);
+      };
+
+      var kill_match_array = victim.split(" with ");
       var victim = kill_match_array[0].toLowerCase();
       if(current_location.npcs) {
         if(current_location.npcs.indexOf(victim) > -1) {
           if ( kill_match_array.length > 1 ) {
               var with_item = kill_match_array[1];
-              if (inventory.indexOf(with_item.trim()) > -1) {
-                  rampage = true;
-                  score = score - 10;
-                  npcs[victim].dead = true;
-                  var index = current_location.npcs.indexOf(victim);
-                  current_location.corpses.push(current_location.npcs.splice(index,1)[0]);
-                  var weapon_index = inventory.indexOf(with_item.trim());
-                  destroyed_items.push(inventory.splice(weapon_index, 1)[0]);
-                  return objects[with_item].to_kill + npcs[victim].lines.death;
+              if ((inventory.indexOf(with_item.trim()) > -1)) {
+                  // Check whether weapon works on victim
+                  if (canVictimBeKilledWithWeapon(victim, with_item.trim())) {
+                    rampage = true;
+                    score = score - 10;
+                    npcs[victim].dead = true;
+                    var index = current_location.npcs.indexOf(victim);
+                    current_location.corpses.push(current_location.npcs.splice(index,1)[0]);
+                    var weapon_index = inventory.indexOf(with_item.trim());
+                    destroyed_items.push(inventory.splice(weapon_index, 1)[0]);
+                    return objects[with_item].to_kill + npcs[victim].lines.death;
+                  } else {
+                    return objects[with_item].kill_fail;
+                  }
               } else if (with_item) {
                   return "You try and pull out " + with_item + " from your persons, but you cannot seem to find it.";
               } else {
                   win_status = "lose";
-                return ("You have a brief struggle with " + npcs[victim].name + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.")
+                return ("You have a brief struggle with " + npcs[victim].name + " but they eventually succumb to your superior strength and military training. The rest of the office gapes horrified at your violent act. Someone from Loomio pulls out a gun and shoots you. You are dead and you lose the game.");
               }
           }
           return ("You look at your fists. You look at " + npcs[victim].name + ". You look back at your fists again. You can't kill " + npcs[victim].name + " without a weapon. I hasten to add that murder is highly illegal and ethically indefensible. Please don't kill " + npcs[victim].name + ". ");
@@ -560,7 +579,7 @@ var verbs = {
       if(current_location.npcs) {
         if(current_location.npcs.indexOf(person) > -1) {
           if (rampage === true) {
-            return (npcs[person].name + " cowers. ")
+            return (npcs[person].name + " cowers. ");
           }
           return (npcs[person].lines.greet);
         }
@@ -584,7 +603,7 @@ var verbs = {
           return (objects[bike].on_use);
         }
         else {
-          return "You can't ride that. You try to ride it and it looks stupid. You are embarrassed, and rightly so. " 
+          return "You can't ride that. You try to ride it and it looks stupid. You are embarrassed, and rightly so. ";
         }
       }
     },
@@ -599,15 +618,15 @@ var verbs = {
     transitive: true,
     intransitive: true
   }
-}
+};
 
 var images = {
-  success_christmas_tree:  
+  success_christmas_tree:
       "<pre>"+
       "" +"\n"+
-      "                ---------------------------------------------------" +"\n"+ 
+      "                ---------------------------------------------------" +"\n"+
       "                         SEASONS GREETINGS FROM RABID" +"\n"+
-      "                ---------------------------------------------------" +"\n"+ 
+      "                ---------------------------------------------------" +"\n"+
       "" +"\n"+
       "                   May a rabbit, a bird, and a mouse with ladder" +"\n"+
       "                   decorate your tree." +"\n"+
@@ -664,5 +683,5 @@ var endings = {
     final_message: "images[success_christmas_tree]",
     tweet: "I won the @Rabidtech Christmas card with the POWER OF LOVE! "
   }
-}
+};
 
